@@ -2,7 +2,12 @@ use raytracer::*;
 
 #[test]
 fn test_tuple_new() {
-    let tuple = Tuple::init(1.0, 2.0, 3.0, 4.0);
+    let tuple = Tuple {
+        x: 1.0,
+        y: 2.0,
+        z: 3.0,
+        w: 4.0,
+    };
     assert_eq!(tuple.x, 1.0);
     assert_eq!(tuple.y, 2.0);
     assert_eq!(tuple.z, 3.0);
@@ -82,8 +87,10 @@ fn test_tuple_magnitude() {
 #[test]
 fn test_tuple_norm() {
     let vector_one = vector(3.0, 4.0, 12.0);
-    assert_eq!(vector_one.norm(),
-    		   vector(3.0 / 13.0, 4.0 / 13.0, 12.0 / 13.0));
+    assert_eq!(
+        vector_one.norm(),
+        vector(3.0 / 13.0, 4.0 / 13.0, 12.0 / 13.0)
+    );
 }
 
 #[test]
@@ -113,4 +120,50 @@ fn test_tuple_cross_product_inverse() {
     assert_eq!(dot_product, vector(1.0, -2.0, 1.0));
 }
 
-// normalização
+#[test]
+fn test_color_create() {
+    let color = Color {
+        red: -0.5,
+        green: 0.4,
+        blue: 1.7,
+    };
+
+    assert_eq!(color.red, -0.5);
+    assert_eq!(color.green, 0.4);
+    assert_eq!(color.blue, 1.7);
+}
+
+#[test]
+fn test_color_add() {
+    let color_one = color(0.9, 0.6, 0.75);
+    let color_two = color(0.7, 0.1, 0.25);
+    let color_three = color_one.add(color_two);
+
+    assert_eq!(color_three, color(1.6, 0.7, 1.0));
+}
+
+#[test]
+fn test_color_sub() {
+    let color_one = color(0.9, 0.6, 0.75);
+    let color_two = color(0.7, 0.1, 0.25);
+    let color_three = color_one.sub(color_two);
+
+    assert_eq!(color_three, color(0.2, 0.5, 0.50));
+}
+
+#[test]
+fn test_color_multiply() {
+    let color_one = color(0.2, 0.3, 0.4);
+    let color_two = color_one.multiply(2.0);
+
+    assert_eq!(color_two, color(0.4, 0.6, 0.8));
+}
+
+#[test]
+fn test_color_hadamard_product() {
+    let color_one = color(1.0, 0.2, 0.4);
+    let color_two = color(0.9, 1.0, 0.1);
+    let color_three = color_one.hadamard_product(color_two);
+
+    assert_eq!(color_three, color(0.9, 0.2, 0.04));
+}
