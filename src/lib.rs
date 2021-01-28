@@ -90,29 +90,15 @@ impl PartialEq for Tuple {
 }
 
 pub fn point(x: f64, y: f64, z: f64) -> Tuple {
-    Tuple {
-        x: x,
-        y: y,
-        z: z,
-        w: 1.0,
-    }
+    Tuple { x, y, z, w: 1.0 }
 }
 
 pub fn vector(x: f64, y: f64, z: f64) -> Tuple {
-    Tuple {
-        x: x,
-        y: y,
-        z: z,
-        w: 0.0,
-    }
+    Tuple { x, y, z, w: 0.0 }
 }
 
 pub fn color(red: f64, green: f64, blue: f64) -> Color {
-    Color {
-        red: red,
-        green: green,
-        blue: blue,
-    }
+    Color { red, green, blue }
 }
 
 impl Color {
@@ -170,9 +156,9 @@ impl Canvas {
         let pixels = vec![vec![color(0.0, 0.0, 0.0); width]; height];
 
         Canvas {
-            width: width,
-            height: height,
-            pixels: pixels,
+            width,
+            height,
+            pixels,
         }
     }
 }
