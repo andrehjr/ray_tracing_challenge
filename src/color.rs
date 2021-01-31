@@ -53,4 +53,4 @@ impl Color {
 
 pub fn color(red: f64, green: f64, blue: f64) -> Color {
     Color { red, green, blue }
-}	
+}
