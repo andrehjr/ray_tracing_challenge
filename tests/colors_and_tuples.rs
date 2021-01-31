@@ -135,7 +135,7 @@ fn test_color_create() {
 
 #[test]
 fn test_color_add() {
-    let color_one = color(0.9, 0.6, 0.75);
+    let color_one = raytracer::color(0.9, 0.6, 0.75);
     let color_two = color(0.7, 0.1, 0.25);
     let color_three = color_one.add(color_two);
 
