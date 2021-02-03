@@ -16,4 +16,12 @@ impl Canvas {
             pixels,
         }
     }
+
+    pub fn pixel_at(&self, x: usize, y: usize) -> Color {
+        self.pixels[y][x]
+    }
+
+    pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {
+        self.pixels[y][x] = color
+    }
 }
