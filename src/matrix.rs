@@ -7,18 +7,18 @@ pub struct Matrix {
 }
 
 impl Matrix {
-    pub fn init(matrix: Vec<Vec<f64>>) -> Matrix {
-        Matrix { matrix }
+    pub fn init(matrix: Vec<Vec<f64>>) -> Self {
+        Self { matrix }
     }
 
-    pub fn identity(size: usize) -> Matrix {
+    pub fn identity(size: usize) -> Self {
         let mut matrix = vec![vec![0.0; size]; size];
 
         for pos in 0..size {
             matrix[pos][pos] = 1.0
         }
 
-        Matrix { matrix }
+        Self { matrix }
     }
 
     pub fn at(&self, x: usize, y: usize) -> f64 {

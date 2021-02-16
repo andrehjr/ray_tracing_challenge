@@ -13,13 +13,13 @@ fn scale_color(color: f64) -> i32 {
 }
 
 pub fn canvas_to_ppm(canvas: Canvas) -> String {
-    let mut ppm: Vec<String> = vec![];
+    let mut ppm = vec![];
     ppm.push("P3".to_string());
     ppm.push(format!("{} {}", canvas.width, canvas.height));
     ppm.push("255".to_string());
 
     for line in canvas.pixels.iter() {
-        let mut ppm_line: Vec<String> = vec![];
+        let mut ppm_line = vec![];
 
         for pixel in line.iter() {
             ppm_line.push(format!("{}", scale_color(pixel.red)));

@@ -50,7 +50,7 @@ impl Mul<f64> for Tuple {
 impl Mul<Tuple> for Tuple {
     type Output = Self;
 
-    fn mul(self, other: Tuple) -> Self {
+    fn mul(self, other: Self) -> Self {
         Self {
             x: self.x * other.x,
             y: self.y * other.y,
@@ -61,8 +61,8 @@ impl Mul<Tuple> for Tuple {
 }
 
 impl Tuple {
-    pub fn negate(&self) -> Tuple {
-        Tuple {
+    pub fn negate(&self) -> Self {
+        Self {
             x: -self.x,
             y: -self.y,
             z: -self.z,
@@ -74,12 +74,12 @@ impl Tuple {
         ((self.x * self.x) + (self.y * self.y) + (self.z * self.z)).sqrt()
     }
 
-    pub fn norm(&self) -> Tuple {
+    pub fn norm(&self) -> Self {
         self.clone() * (1.0 / self.magnitude())
     }
 
-    pub fn cross_product(&self, other: Tuple) -> Tuple {
-        Tuple {
+    pub fn cross_product(&self, other: Tuple) -> Self {
+        Self {
             x: self.y * other.z - self.z * other.y,
             y: self.z * other.x - self.x * other.z,
             z: self.x * other.y - self.y * other.x,
@@ -100,10 +100,14 @@ impl PartialEq for Tuple {
     }
 }
 
-pub fn point(x: f64, y: f64, z: f64) -> Tuple {
-    Tuple { x, y, z, w: 1.0 }
+#[macro_export]
+macro_rules! point {
+    ($x:expr, $y: expr, $z: expr) =>
+        {Tuple{x: $x as f64, y:  $y as f64, z: $z as f64, w: 1.0}}
 }
 
-pub fn vector(x: f64, y: f64, z: f64) -> Tuple {
-    Tuple { x, y, z, w: 0.0 }
+#[macro_export]
+macro_rules! vector {
+    ($x:expr, $y: expr, $z: expr) =>
+        {Tuple{x: $x as f64, y:  $y as f64, z: $z as f64, w: 0.0}}
 }

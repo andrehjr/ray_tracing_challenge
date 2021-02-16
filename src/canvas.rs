@@ -1,4 +1,5 @@
-use crate::color::{color, Color};
+use crate::color;
+use crate::color::{Color};
 
 pub struct Canvas {
     pub height: usize,
@@ -8,7 +9,7 @@ pub struct Canvas {
 
 impl Canvas {
     pub fn init(width: usize, height: usize) -> Canvas {
-        let pixels = vec![vec![color(0.0, 0.0, 0.0); width]; height];
+        let pixels = vec![vec![color!(0.0, 0.0, 0.0); width]; height];
 
         Canvas {
             width,
