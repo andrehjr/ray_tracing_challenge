@@ -77,3 +77,26 @@ impl Mul<Matrix> for Matrix {
         Self { matrix }
     }
 }
+
+#[macro_export]
+macro_rules! matrix {
+    () => {
+        {
+            use Matrix;
+            Matrix::init(vec![])
+        }
+    };
+    ($( $( $x: expr ),*);*) => {
+        {
+            let arrays = [ $( [ $($x),* ] ),* ];
+            let lines = arrays.len();
+            let columns = arrays[0].len();
+
+            let data: Vec<_> = arrays.iter()
+                .map(|row| row.to_vec())
+                .collect();
+
+            Matrix::init(data)
+        }
+    }
+}

@@ -102,12 +102,24 @@ impl PartialEq for Tuple {
 
 #[macro_export]
 macro_rules! point {
-    ($x:expr, $y: expr, $z: expr) =>
-        {Tuple{x: $x as f64, y:  $y as f64, z: $z as f64, w: 1.0}}
+    ($x:expr, $y: expr, $z: expr) => {
+        Tuple {
+            x: $x as f64,
+            y: $y as f64,
+            z: $z as f64,
+            w: 1.0,
+        }
+    };
 }
 
 #[macro_export]
 macro_rules! vector {
-    ($x:expr, $y: expr, $z: expr) =>
-        {Tuple{x: $x as f64, y:  $y as f64, z: $z as f64, w: 0.0}}
+    ($x:expr, $y: expr, $z: expr) => {
+        Tuple {
+            x: $x as f64,
+            y: $y as f64,
+            z: $z as f64,
+            w: 0.0,
+        }
+    };
 }
