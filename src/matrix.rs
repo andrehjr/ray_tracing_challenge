@@ -1,4 +1,5 @@
 use crate::tuple::Tuple;
+use std::ops::Mul;
 
 #[derive(Debug, Clone)]
 pub struct Matrix {
@@ -23,8 +24,33 @@ impl Matrix {
     pub fn at(&self, x: usize, y: usize) -> f64 {
         self.matrix[x][y]
     }
+}
 
-    pub fn multiply(&self, other: Matrix) -> Matrix {
+impl Mul<Tuple> for Matrix {
+    type Output = Tuple;
+
+    fn mul(self, tuple: Self::Output) -> Self::Output {
+        let matrix = Self::init(vec![
+            vec![tuple.x],
+            vec![tuple.y],
+            vec![tuple.z],
+            vec![tuple.w],
+        ]);
+        let result = self.clone() * matrix;
+
+        let x = result.matrix[0][0];
+        let y = result.matrix[1][0];
+        let z = result.matrix[2][0];
+        let w = result.matrix[3][0];
+
+        Self::Output { x, y, z, w }
+    }
+}
+
+impl Mul<Matrix> for Matrix {
+    type Output = Self;
+
+    fn mul(self, other: Self) -> Self {
         let lines = self.matrix.len();
         let columns = other.matrix[0].len();
 
@@ -42,23 +68,6 @@ impl Matrix {
             }
         }
 
-        Matrix { matrix }
-    }
-
-    pub fn multiply_tuple(&self, tuple: Tuple) -> Tuple {
-        let matrix = Matrix::init(vec![
-            vec![tuple.x],
-            vec![tuple.y],
-            vec![tuple.z],
-            vec![tuple.w],
-        ]);
-        let result = self.multiply(matrix);
-
-        let x = result.matrix[0][0];
-        let y = result.matrix[1][0];
-        let z = result.matrix[2][0];
-        let w = result.matrix[3][0];
-
-        Tuple { x, y, z, w }
+        Self { matrix }
     }
 }

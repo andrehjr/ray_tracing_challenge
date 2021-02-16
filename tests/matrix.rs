@@ -35,7 +35,7 @@ fn test_matrix_multiply() {
         vec![16.0, 26.0, 46.0, 42.0],
     ]);
 
-    assert_eq!(matrix_a.multiply(matrix_b).matrix, matrix_result.matrix);
+    assert_eq!((matrix_a * matrix_b).matrix, matrix_result.matrix);
 }
 
 #[test]
@@ -61,7 +61,7 @@ fn test_matrix_multiple_tuple() {
         w: 1.0,
     };
 
-    assert_eq!(matrix_a.multiply_tuple(tuple), result);
+    assert_eq!(matrix_a * tuple, result);
 }
 
 #[test]
@@ -88,5 +88,6 @@ fn test_matrix_identity_multiply() {
     ]);
 
     let identity = Matrix::identity(4);
-    assert_eq!(matrix_a.matrix, matrix_a.multiply(identity).matrix);
+    let result = (identity * matrix_a.clone()).matrix;
+    assert_eq!(matrix_a.matrix, result);
 }
