@@ -1,3 +1,5 @@
+use std::ops::{Add, Mul, Sub};
+
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
     pub red: f64,
@@ -17,33 +19,47 @@ impl PartialEq for Color {
     }
 }
 
-impl Color {
-    pub fn add(&self, other: Color) -> Color {
-        Color {
+impl Add<Color> for Color {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Self {
             red: self.red + other.red,
             green: self.green + other.green,
             blue: self.blue + other.blue,
         }
     }
+}
 
-    pub fn sub(&self, other: Color) -> Color {
-        Color {
+impl Sub<Color> for Color {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self::Output {
+        Self {
             red: self.red - other.red,
             green: self.green - other.green,
             blue: self.blue - other.blue,
         }
     }
+}
 
-    pub fn multiply(&self, factor: f64) -> Color {
-        Color {
+impl Mul<f64> for Color {
+    type Output = Self;
+
+    fn mul(self, factor: f64) -> Self {
+        Self {
             red: self.red * factor,
             green: self.green * factor,
             blue: self.blue * factor,
         }
     }
+}
 
-    pub fn hadamard_product(&self, other: Color) -> Color {
-        Color {
+impl Mul<Color> for Color {
+    type Output = Self;
+
+    fn mul(self, other: Color) -> Self {
+        Self {
             red: self.red * other.red,
             green: self.green * other.green,
             blue: self.blue * other.blue,

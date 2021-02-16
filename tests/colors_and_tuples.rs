@@ -137,7 +137,7 @@ fn test_color_create() {
 fn test_color_add() {
     let color_one = color(0.9, 0.6, 0.75);
     let color_two = color(0.7, 0.1, 0.25);
-    let color_three = color_one.add(color_two);
+    let color_three = color_one + color_two;
 
     assert_eq!(color_three, color(1.6, 0.7, 1.0));
 }
@@ -146,7 +146,7 @@ fn test_color_add() {
 fn test_color_sub() {
     let color_one = color(0.9, 0.6, 0.75);
     let color_two = color(0.7, 0.1, 0.25);
-    let color_three = color_one.sub(color_two);
+    let color_three = color_one - color_two;
 
     assert_eq!(color_three, color(0.2, 0.5, 0.50));
 }
@@ -154,7 +154,7 @@ fn test_color_sub() {
 #[test]
 fn test_color_multiply() {
     let color_one = color(0.2, 0.3, 0.4);
-    let color_two = color_one.multiply(2.0);
+    let color_two = color_one * 2.0;
 
     assert_eq!(color_two, color(0.4, 0.6, 0.8));
 }
@@ -163,7 +163,7 @@ fn test_color_multiply() {
 fn test_color_hadamard_product() {
     let color_one = color(1.0, 0.2, 0.4);
     let color_two = color(0.9, 1.0, 0.1);
-    let color_three = color_one.hadamard_product(color_two);
+    let color_three = color_one * color_two;
 
     assert_eq!(color_three, color(0.9, 0.2, 0.04));
 }
