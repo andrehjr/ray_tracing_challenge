@@ -47,7 +47,7 @@ fn test_tuple_not_eq_vector_and_points() {}
 fn test_tuple_add() {
     let vector_one = vector(2.0, 1.0, 3.0);
     let vector_two = vector(1.0, 1.0, 3.0);
-    let added = vector_one.add(vector_two);
+    let added = vector_one + vector_two;
     assert_eq!(added, vector(3.0, 2.0, 6.0));
 }
 
@@ -56,7 +56,7 @@ fn test_tuple_add() {
 fn test_tuple_sub() {
     let vector_one = vector(2.0, 1.0, 3.0);
     let vector_two = vector(1.0, 1.0, 3.0);
-    let added = vector_one.sub(vector_two);
+    let added = vector_one - vector_two;
     assert_eq!(added, vector(1.0, 0.0, 0.0));
 }
 
@@ -73,7 +73,7 @@ fn test_tuple_negate() {
 #[test]
 fn test_tuple_multiply() {
     let vector_one = vector(2.0, 1.0, 3.0);
-    assert_eq!(vector_one.multiply(4.0), vector(8.0, 4.0, 12.0));
+    assert_eq!(vector_one * 4.0, vector(8.0, 4.0, 12.0));
 }
 
 // magnitude
@@ -97,7 +97,7 @@ fn test_tuple_norm() {
 fn test_tuple_dot_product() {
     let vector_one = vector(2.0, 1.0, 3.0);
     let vector_two = vector(2.0, 1.0, 3.0);
-    let dot_product = vector_one.dot_product(vector_two);
+    let dot_product = vector_one * vector_two;
 
     assert_eq!(dot_product, vector(4.0, 1.0, 9.0));
 }
