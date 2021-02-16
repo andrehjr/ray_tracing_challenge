@@ -26,6 +26,12 @@ impl Matrix {
     }
 }
 
+impl PartialEq for Matrix {
+    fn eq(&self, other: &Self) -> bool {
+        self.matrix == other.matrix
+    }
+}
+
 impl Mul<Tuple> for Matrix {
     type Output = Tuple;
 

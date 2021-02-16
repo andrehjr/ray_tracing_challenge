@@ -75,7 +75,7 @@ fn test_matrix_identity() {
 
     let identity = Matrix::identity(4);
 
-    assert_eq!(matrix_a.matrix, identity.matrix);
+    assert_eq!(matrix_a, identity);
 }
 
 #[test]
@@ -88,6 +88,6 @@ fn test_matrix_identity_multiply() {
     ]);
 
     let identity = Matrix::identity(4);
-    let result = (identity * matrix_a.clone()).matrix;
-    assert_eq!(matrix_a.matrix, result);
+    let result = identity * matrix_a.clone();
+    assert_eq!(matrix_a, result);
 }
