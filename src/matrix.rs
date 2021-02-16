@@ -1,4 +1,5 @@
 use crate::tuple::Tuple;
+use crate::matrix;
 use std::ops::Mul;
 
 #[derive(Debug, Clone)]
@@ -36,13 +37,8 @@ impl Mul<Tuple> for Matrix {
     type Output = Tuple;
 
     fn mul(self, tuple: Self::Output) -> Self::Output {
-        let matrix = Self::init(vec![
-            vec![tuple.x],
-            vec![tuple.y],
-            vec![tuple.z],
-            vec![tuple.w],
-        ]);
-        let result = self.clone() * matrix;
+        let matrix = matrix![tuple.x; tuple.y ; tuple.z; tuple.w ];
+        let result = self * matrix;
 
         let x = result.matrix[0][0];
         let y = result.matrix[1][0];
@@ -82,15 +78,12 @@ impl Mul<Matrix> for Matrix {
 macro_rules! matrix {
     () => {
         {
-            use Matrix;
             Matrix::init(vec![])
         }
     };
     ($( $( $x: expr ),*);*) => {
         {
             let arrays = [ $( [ $($x),* ] ),* ];
-            let lines = arrays.len();
-            let columns = arrays[0].len();
 
             let data: Vec<_> = arrays.iter()
                 .map(|row| row.to_vec())
