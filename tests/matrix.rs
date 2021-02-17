@@ -69,3 +69,19 @@ fn test_matrix_identity_multiply() {
     let result = identity * matrix_a.clone();
     assert_eq!(matrix_a, result);
 }
+
+#[test]
+fn test_transpose() {
+    let matrix_a = matrix![0.0, 9.0, 3.0, 0.0;
+						   9.0, 8.0, 0.0, 8.0;
+						   1.0, 8.0, 5.0, 3.0;
+						   0.0, 0.0, 5.0, 8.0 ];
+
+    let transposed = matrix![0.0, 9.0, 1.0, 0.0;
+				 			 9.0, 8.0, 8.0, 0.0;
+			 				 3.0, 0.0, 5.0, 5.0;
+							 0.0, 8.0, 3.0, 8.0];
+
+    assert_eq!(matrix_a.transpose(), transposed);
+    assert_eq!(Matrix::identity(4), Matrix::identity(4).transpose());
+}

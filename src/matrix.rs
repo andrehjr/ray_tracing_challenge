@@ -1,5 +1,5 @@
-use crate::tuple::Tuple;
 use crate::matrix;
+use crate::tuple::Tuple;
 use std::ops::Mul;
 
 #[derive(Debug, Clone)]
@@ -24,6 +24,20 @@ impl Matrix {
 
     pub fn at(&self, x: usize, y: usize) -> f64 {
         self.matrix[x][y]
+    }
+
+    pub fn transpose(&self) -> Self {
+        let lines = self.matrix.len();
+        let columns = self.matrix[0].len();
+        let mut matrix = vec![vec![0.0; columns]; lines];
+
+        for x in 0..lines {
+            for y in 0..columns {
+                matrix[y][x] = self.at(x, y)
+            }
+        }
+
+        Self { matrix }
     }
 }
 
