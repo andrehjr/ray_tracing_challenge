@@ -114,7 +114,7 @@ macro_rules! point {
 
 #[macro_export]
 macro_rules! vector {
-    ($x:expr, $y: expr, $z: expr) => {
+    ($x: expr, $y: expr, $z: expr) => {
         Tuple {
             x: $x as f64,
             y: $y as f64,

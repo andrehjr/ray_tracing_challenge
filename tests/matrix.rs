@@ -1,4 +1,5 @@
 use raytracer::*;
+use std::f64::consts::PI;
 
 #[test]
 fn test_basic_matrix() {
@@ -25,9 +26,9 @@ fn test_matrix_multiply() {
 				            1.0, 2.0, 7.0, 8.0];
 
     let matrix_result = matrix![20.0, 22.0, 50.0, 48.0;
-        44.0, 54.0, 114.0, 108.0;
-        40.0, 58.0, 110.0, 102.0;
-        16.0, 26.0, 46.0, 42.0];
+						        44.0, 54.0, 114.0, 108.0;
+						        40.0, 58.0, 110.0, 102.0;
+						        16.0, 26.0, 46.0, 42.0];
 
     assert_eq!((matrix_a * matrix_b).matrix, matrix_result.matrix);
 }
@@ -49,9 +50,9 @@ fn test_matrix_multiple_tuple() {
 #[test]
 fn test_matrix_identity() {
     let matrix_a = matrix![1.0, 0.0, 0.0, 0.0;
-        0.0, 1.0, 0.0, 0.0;
-        0.0, 0.0, 1.0, 0.0;
-        0.0, 0.0, 0.0, 1.0];
+                           0.0, 1.0, 0.0, 0.0;
+					       0.0, 0.0, 1.0, 0.0;
+					       0.0, 0.0, 0.0, 1.0];
 
     let identity = Matrix::identity(4);
 
@@ -61,9 +62,9 @@ fn test_matrix_identity() {
 #[test]
 fn test_matrix_identity_multiply() {
     let matrix_a = matrix![1.0, 2.0, 3.0, 4.0;
-				        2.0, 4.0, 4.0, 2.0;
-				        8.0, 6.0, 4.0, 1.0;
-				        0.0, 0.0, 0.0, 1.0];
+				           2.0, 4.0, 4.0, 2.0;
+				           8.0, 6.0, 4.0, 1.0;
+				           0.0, 0.0, 0.0, 1.0];
 
     let identity = Matrix::identity(4);
     let result = identity * matrix_a.clone();

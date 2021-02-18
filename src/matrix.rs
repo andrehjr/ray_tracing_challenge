@@ -107,3 +107,63 @@ macro_rules! matrix {
         }
     }
 }
+
+#[macro_export]
+macro_rules! translation {
+    ($x: expr, $y: expr, $z: expr) => {
+        matrix![ 1.0, 0.0, 0.0, $x;
+                 0.0, 1.0, 0.0, $y;
+                 0.0, 0.0, 1.0, $z;
+                 0.0, 0.0, 0.0, 1.0];
+    };
+}
+
+#[macro_export]
+macro_rules! scaling {
+    ($x: expr, $y: expr, $z: expr) => {
+        matrix![  $x, 0.0, 0.0, 0.0;
+                 0.0,  $y, 0.0, 0.0;
+                 0.0, 0.0,  $z, 0.0;
+                 0.0, 0.0, 0.0, 1.0];
+    };
+}
+
+#[macro_export]
+macro_rules! rotation_x {
+    ($x: expr) => {
+        matrix![ 1.0, 0.0, 0.0, 0.0;
+                 0.0, $x.cos(), -$x.sin(), 0.0;
+                 0.0, $x.sin(),  $x.cos(), 0.0;
+                 0.0, 0.0, 0.0, 1.0];
+    };
+}
+
+#[macro_export]
+macro_rules! rotation_y {
+    ($x: expr) => {
+        matrix![ $x.cos(), 0.0, $x.sin(), 0.0;
+                 0.0, 1.0, 0.0, 0.0;
+                 -$x.sin(), 0.0, $x.cos(), 0.0;
+                 0.0, 0.0, 0.0, 1.0];
+    };
+}
+
+#[macro_export]
+macro_rules! rotation_z {
+    ($x: expr) => {
+        matrix![ $x.cos(), -$x.sin(), 0.0, 0.0;
+                 $x.sin(), $x.cos(), 0.0, 0.0;
+                 0.0, 0.0, 1.0, 0.0;
+                 0.0, 0.0, 0.0, 1.0];
+    };
+}
+
+#[macro_export]
+macro_rules! skew {
+    ($x_y: expr, $x_z: expr, $y_x: expr, $y_z: expr, $z_x: expr, $z_y: expr) => {
+        matrix![ 1.0, $x_y, $x_z, 0.0;
+                 $y_x, 1.0, $y_z, 0.0;
+                 $z_x, $z_y, 1.0, 0.0;
+                  0.0, 0.0, 0.0, 1.0];
+    };
+}
