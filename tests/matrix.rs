@@ -1,5 +1,4 @@
 use raytracer::*;
-use std::f64::consts::PI;
 
 #[test]
 fn test_basic_matrix() {
