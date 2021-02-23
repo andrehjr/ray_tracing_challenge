@@ -89,53 +89,53 @@ impl Tuple {
         }
     }
 
-    pub fn translation(self, x: f64, y: f64, z: f64) -> Self {
+    pub fn translation(&self, x: f64, y: f64, z: f64) -> Self {
         let transform = matrix![ 1.0, 0.0, 0.0, x;
                                  0.0, 1.0, 0.0, y;
                                  0.0, 0.0, 1.0, z;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * self
+        transform * *self
     }
 
-    pub fn scaling(self, x: f64, y: f64, z: f64) -> Self {
+    pub fn scaling(&self, x: f64, y: f64, z: f64) -> Self {
         let transform = matrix![   x, 0.0, 0.0, 0.0;
                                  0.0,   y, 0.0, 0.0;
                                  0.0, 0.0,   z, 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * self
+        transform * *self
     }
 
-    pub fn rotation_x(self, x: f64) -> Self {
+    pub fn rotation_x(&self, x: f64) -> Self {
         let transform = matrix![ 1.0, 0.0, 0.0, 0.0;
                                  0.0, x.cos(), -x.sin(), 0.0;
                                  0.0, x.sin(),  x.cos(), 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * self
+        transform * *self
     }
 
-    pub fn rotation_y(self, x: f64) -> Self {
+    pub fn rotation_y(&self, x: f64) -> Self {
         let transform = matrix![ x.cos(), 0.0, x.sin(), 0.0;
                                  0.0, 1.0, 0.0, 0.0;
                                  -x.sin(), 0.0, x.cos(), 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * self
+        transform * *self
     }
 
-    pub fn rotation_z(self, x: f64) -> Self {
+    pub fn rotation_z(&self, x: f64) -> Self {
         let transform = matrix![ x.cos(), -x.sin(), 0.0, 0.0;
                                  x.sin(), x.cos(), 0.0, 0.0;
                                  0.0, 0.0, 1.0, 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * self
+        transform * *self
     }
 
-    pub fn skew(self, x_y: f64, x_z: f64, y_x: f64, y_z: f64, z_x: f64, z_y: f64) -> Self {
+    pub fn skew(&self, x_y: f64, x_z: f64, y_x: f64, y_z: f64, z_x: f64, z_y: f64) -> Self {
         let transform = matrix![ 1.0, x_y, x_z, 0.0;
                                   y_x, 1.0, y_z, 0.0;
                                   z_x, z_y, 1.0, 0.0;
                                   0.0, 0.0, 0.0, 1.0];
 
-        transform * self
+        transform * *self
     }
 }
 
