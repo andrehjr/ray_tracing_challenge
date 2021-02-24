@@ -16,13 +16,15 @@ pub struct Intersection {
     pub object: Sphere,
 }
 
+#[derive(Debug)]
 pub struct IntersectList(pub Vec<Intersection>);
 
 impl IntersectList {
-    pub fn hit(&self) -> Option<&Intersection> {
+    pub fn hit(&self) -> Option<Intersection> {
         // <=>
         self.0
             .iter()
+            .cloned()
             .filter(|x| x.t.is_sign_positive())
             .min_by(|a, b| a.t.partial_cmp(&b.t).unwrap())
     }

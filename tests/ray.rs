@@ -155,7 +155,7 @@ fn test_hit() {
 
     let intersections = IntersectList(vec![i1, i2]);
 
-    assert_eq!(intersections.hit(), Some(&i1));
+    assert_eq!(intersections.hit(), Some(i1));
 }
 
 #[test]
@@ -171,7 +171,7 @@ fn test_hit_negative() {
 
     let intersections = IntersectList(vec![i1, i2]);
 
-    assert_eq!(intersections.hit(), Some(&i2));
+    assert_eq!(intersections.hit(), Some(i2));
 }
 
 #[test]
