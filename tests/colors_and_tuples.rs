@@ -95,11 +95,11 @@ fn test_tuple_norm() {
 
 #[test]
 fn test_tuple_dot_product() {
-    let vector_one = vector!(2.0, 1.0, 3.0);
-    let vector_two = vector!(2.0, 1.0, 3.0);
+    let vector_one = vector!(1.0, 2.0, 3.0);
+    let vector_two = vector!(2.0, 3.0, 4.0);
     let dot_product = vector_one * vector_two;
 
-    assert_eq!(dot_product, vector!(4.0, 1.0, 9.0));
+    assert_eq!(dot_product, 20.0);
 }
 
 #[test]

@@ -50,15 +50,10 @@ impl Mul<f64> for Tuple {
 }
 
 impl Mul<Tuple> for Tuple {
-    type Output = Self;
+    type Output = f64;
 
-    fn mul(self, other: Self) -> Self {
-        Self {
-            x: self.x * other.x,
-            y: self.y * other.y,
-            z: self.z * other.z,
-            w: self.w * other.w,
-        }
+    fn mul(self, other: Self) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z + self.w * other.w
     }
 }
 
