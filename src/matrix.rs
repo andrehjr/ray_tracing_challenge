@@ -30,7 +30,11 @@ impl Matrix {
         if self.matrix.len() == 2 && self.matrix[0].len() == 2 {
             (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[0][1] * self.matrix[1][0])
         } else {
-            0.0
+            self.matrix[0]
+                .clone()
+                .into_iter()
+                .enumerate()
+                .fold(0.0, |acc, (y, item)| acc + (item * self.cofactor(0, y)))
         }
     }
 
@@ -58,6 +62,35 @@ impl Matrix {
         self.submatrix(line, column).determinant()
     }
 
+    pub fn cofactor(&self, line: usize, column: usize) -> f64 {
+        let minor = self.minor(line, column);
+
+        if (line + column) % 2 == 0 {
+            minor
+        } else {
+            minor * -1.0
+        }
+    }
+
+    pub fn inverse(&self) -> Self {
+        let mut inversed = vec![];
+        let determinant = self.determinant();
+        let lines = self.matrix.len();
+
+        for x in 0..lines {
+            inversed.push(
+                self.matrix[x]
+                    .clone()
+                    .into_iter()
+                    .enumerate()
+                    .map(|(y, _item)| self.cofactor(x, y) / determinant)
+                    .collect::<Vec<f64>>(),
+            );
+        }
+
+        Self { matrix: inversed }.transpose()
+    }
+
     pub fn transpose(&self) -> Self {
         let lines = self.matrix.len();
         let columns = self.matrix[0].len();
@@ -73,9 +106,29 @@ impl Matrix {
     }
 }
 
+pub const EPSILON: f64 = 0.001;
+
 impl PartialEq for Matrix {
     fn eq(&self, other: &Self) -> bool {
-        self.matrix == other.matrix
+        if self.matrix.is_empty() && other.matrix.is_empty() {
+            true
+        } else if self.matrix.len() != other.matrix.len()
+            || self.matrix[0].len() != other.matrix[0].len()
+        {
+            false
+        } else {
+            let lines = self.matrix.len();
+            let columns = self.matrix[0].len();
+
+            for x in 0..lines {
+                for y in 0..columns {
+                    if (self.at(x, y) - other.at(x, y)).abs() > EPSILON {
+                        return false;
+                    }
+                }
+            }
+            true
+        }
     }
 }
 
