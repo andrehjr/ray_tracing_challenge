@@ -34,6 +34,26 @@ impl Matrix {
         }
     }
 
+    pub fn submatrix(&self, line: usize, column: usize) -> Self {
+        let lines = self.matrix.len();
+        let mut submatrix = vec![];
+
+        for x in 0..lines {
+            if x != line {
+                submatrix.push(
+                    self.matrix[x]
+                        .clone()
+                        .into_iter()
+                        .enumerate()
+                        .filter_map(|(index, item)| if index != column { Some(item) } else { None })
+                        .collect::<Vec<f64>>(),
+                );
+            }
+        }
+
+        Self { matrix: submatrix }
+    }
+
     pub fn transpose(&self) -> Self {
         let lines = self.matrix.len();
         let columns = self.matrix[0].len();

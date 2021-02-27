@@ -72,9 +72,27 @@ fn test_matrix_identity_multiply() {
 
 #[test]
 fn test_matrix_determinant_2x2() {
-	let matrix_a = matrix![1.0, 5.0; -3.0, 2.0];
+    let matrix_a = matrix![1.0, 5.0; -3.0, 2.0];
 
-	assert_eq!(17.0, matrix_a.determinant());
+    assert_eq!(17.0, matrix_a.determinant());
+}
+
+#[test]
+fn test_matrix_submatrixes() {
+    let matrix_a = matrix![ 1.0, 5.0, 0.0;
+						   -3.0, 2.0, 7.0;
+						    0.0, 6.0, -3.0];
+
+    assert_eq!(matrix![-3.0, 2.0; 0.0, 6.0], matrix_a.submatrix(0, 2));
+
+    let matrix_b = matrix![-6.0, 1.0, 1.0, 6.0;
+						   -8.0, 5.0, 8.0, 6.0;
+						   -1.0, 0.0, 8.0, 2.0;
+						   -7.0, 1.0, -1.0, 1.0];
+    assert_eq!(
+        matrix![-6.0, 1.0, 6.0; -8.0, 8.0, 6.0; -7.0, -1.0, 1.0],
+        matrix_b.submatrix(2, 1)
+    );
 }
 
 #[test]
