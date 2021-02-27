@@ -26,6 +26,14 @@ impl Matrix {
         self.matrix[x][y]
     }
 
+    pub fn determinant(&self) -> f64 {
+        if self.matrix.len() == 2 && self.matrix[0].len() == 2 {
+            (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[0][1] * self.matrix[1][0])
+        } else {
+            0.0
+        }
+    }
+
     pub fn transpose(&self) -> Self {
         let lines = self.matrix.len();
         let columns = self.matrix[0].len();

@@ -71,6 +71,13 @@ fn test_matrix_identity_multiply() {
 }
 
 #[test]
+fn test_matrix_determinant_2x2() {
+	let matrix_a = matrix![1.0, 5.0; -3.0, 2.0];
+
+	assert_eq!(17.0, matrix_a.determinant());
+}
+
+#[test]
 fn test_transpose() {
     let matrix_a = matrix![0.0, 9.0, 3.0, 0.0;
 						   9.0, 8.0, 0.0, 8.0;
