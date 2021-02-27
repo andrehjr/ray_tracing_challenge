@@ -96,6 +96,15 @@ fn test_matrix_submatrixes() {
 }
 
 #[test]
+fn test_minor_matrix() {
+    let matrix_a = matrix![3.0, 5.0, 0.0;
+						   2.0,-1.0,-7.0;
+						   6.0,-1.0, 5.0];
+
+    assert_eq!(25.0, matrix_a.minor(1, 0));
+}
+
+#[test]
 fn test_transpose() {
     let matrix_a = matrix![0.0, 9.0, 3.0, 0.0;
 						   9.0, 8.0, 0.0, 8.0;

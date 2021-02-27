@@ -54,6 +54,10 @@ impl Matrix {
         Self { matrix: submatrix }
     }
 
+    pub fn minor(&self, line: usize, column: usize) -> f64 {
+        self.submatrix(line, column).determinant()
+    }
+
     pub fn transpose(&self) -> Self {
         let lines = self.matrix.len();
         let columns = self.matrix[0].len();
