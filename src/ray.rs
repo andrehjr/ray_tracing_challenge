@@ -51,11 +51,11 @@ impl Ray {
 
             let a = Intersection {
                 t: t1,
-                object: sphere.clone(),
+                object: *sphere,
             };
             let b = Intersection {
                 t: t2,
-                object: sphere.clone(),
+                object: *sphere,
             };
 
             vec![a, b]

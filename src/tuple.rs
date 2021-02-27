@@ -72,7 +72,7 @@ impl Tuple {
     }
 
     pub fn norm(&self) -> Self {
-        self.clone() * (1.0 / self.magnitude())
+        *self * (1.0 / self.magnitude())
     }
 
     pub fn cross_product(&self, other: Tuple) -> Self {

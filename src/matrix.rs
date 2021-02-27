@@ -15,8 +15,8 @@ impl Matrix {
     pub fn identity(size: usize) -> Self {
         let mut matrix = vec![vec![0.0; size]; size];
 
-        for pos in 0..size {
-            matrix[pos][pos] = 1.0
+        for (pos, item) in matrix.iter_mut().enumerate().take(size) {
+            item[pos] = 1.0
         }
 
         Self { matrix }
@@ -40,8 +40,8 @@ impl Matrix {
         let mut matrix = vec![vec![0.0; columns]; lines];
 
         for x in 0..lines {
-            for y in 0..columns {
-                matrix[y][x] = self.at(x, y)
+            for (y, item) in matrix.iter_mut().enumerate().take(columns) {
+                item[x] = self.at(x, y)
             }
         }
 
