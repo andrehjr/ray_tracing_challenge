@@ -153,7 +153,7 @@ fn test_hit() {
         object: Sphere {},
     };
 
-    let intersections = IntersectList(vec![i1, i2]);
+    let intersections = IntersectList(vec![i1.clone(), i2.clone()]);
 
     assert_eq!(intersections.hit(), Some(i1));
 }
@@ -169,9 +169,45 @@ fn test_hit_negative() {
         object: Sphere {},
     };
 
-    let intersections = IntersectList(vec![i1, i2]);
+    let intersections = IntersectList(vec![i1.clone(), i2.clone()]);
 
     assert_eq!(intersections.hit(), Some(i2));
+}
+
+#[test]
+fn test_ray_transform() {
+    let charles = Ray {
+        origin: point!(1.0, 2.0, 3.0),
+        direction: vector!(0.0, 1.0, 0.0),
+    };
+
+    let transformation = matrix![ 1.0, 0.0, 0.0, 3.0;
+	                              0.0, 1.0, 0.0, 4.0;
+	                              0.0, 0.0, 1.0, 5.0;
+	                              0.0, 0.0, 0.0, 1.0];
+
+    let ray = charles.transform(transformation.clone());
+
+    assert_eq!(ray.origin, point!(4.0, 6.0, 8.0));
+    assert_eq!(ray.direction, vector!(0.0, 1.0, 0.0));
+}
+
+#[test]
+fn test_ray_transform_scaling() {
+    let charles = Ray {
+        origin: point!(1.0, 2.0, 3.0),
+        direction: vector!(0.0, 1.0, 0.0),
+    };
+
+    let transformation = matrix![ 2.0, 0.0, 0.0, 0.0;
+                                 0.0, 3.0, 0.0, 0.0;
+                                 0.0, 0.0, 4.0, 0.0;
+                                 0.0, 0.0, 0.0, 1.0];
+
+    let ray = charles.transform(transformation.clone());
+
+    assert_eq!(ray.origin, point!(2.0, 6.0, 12.0));
+    assert_eq!(ray.direction, vector!(0.0, 3.0, 0.0));
 }
 
 #[test]
