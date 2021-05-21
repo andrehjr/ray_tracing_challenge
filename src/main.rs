@@ -12,20 +12,29 @@ fn main() {
     let half = wall_size / 2.0;
 
     let _color = color!(1.0, 0.0, 0.0); // red
-    let blue = color!(0.0, 0.0, 1.0);
-
+                                        // let blue = color!(0.0, 0.0, 1.0);
     let transform_skew = matrix![ 1.0, 1.0, 0.0, 0.0;
            	                      0.0, 1.0, 0.0, 0.0;
         	                      0.0, 0.0, 1.0, 0.0;
             	                  0.0, 0.0, 0.0, 1.0];
 
-    let _transform_scaling = matrix![ 0.5, 0.0, 0.0, 0.0;
-     	                             0.0, 0.5, 0.0, 0.0;
-       	                             0.0, 0.0, 0.5, 0.0;
-       	                             0.0, 0.0, 0.0, 1.0];
+    let material = Material {
+        ambient: 0.1,
+        diffuse: 0.9,
+        specular: 0.9,
+        shininess: 200.0,
+        color: color!(1.0, 1.0, 1.0),
+    };
 
-    let _sphere = Sphere { /*transform: transform_skew */};
-    let _sphere_two = Sphere { /*transform: transform_scaling */};
+    let _sphere = Sphere {
+        material: material,
+        transform: Matrix::identity(4),
+    };
+
+    let light = Light {
+        intensity: color!(0.0, 1.0, 0.0),
+        position: point!(-10.0, 10.0, -10.0),
+    };
 
     for x in 0..canvas_size {
         let world_x = -half + pixels_size * x as f64;
@@ -40,18 +49,19 @@ fn main() {
                 direction: (position - ray_origin).norm(),
             };
 
-            let transformed_ray = ray.transform(transform_skew.clone());
-
-            // let hits = ray.intersect(&sphere);
-
-            // if !hits.is_empty() {
-            //	canvas.write_pixel(x, y, color);
-            // }
-
-            let hits = transformed_ray.intersect(&_sphere);
+            let hits = ray.intersect(&_sphere);
 
             if !hits.is_empty() {
-                canvas.write_pixel(x, y, blue);
+                let hit = hits.first().unwrap();
+                let point = ray.position(hit.t);
+
+                let normal = hit.object.normal_at(point);
+                let eye = ray.direction.negate();
+
+                let lightning_color =
+                    lightning(hit.object.material, light.clone(), point, eye, normal);
+
+                canvas.write_pixel(x, y, lightning_color);
             }
         }
     }

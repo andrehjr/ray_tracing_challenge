@@ -8,7 +8,7 @@ fn test_ray_new() {
     };
 
     assert_eq!(ray.origin, point!(0.0, 0.0, 0.0));
-    assert_eq!(ray.direction, point!(0.0, 1.0, 0.0));
+    assert_eq!(ray.direction, vector!(0.0, 1.0, 0.0));
 }
 
 #[test]
@@ -34,7 +34,7 @@ fn test_intersection() {
         direction: vector!(0.0, 0.0, 1.0),
     };
 
-    let sphere = Sphere {};
+    let sphere = Sphere::init();
     let intersections = charles.intersect(&sphere);
 
     let a = Intersection {
@@ -57,7 +57,7 @@ fn test_intersection_one() {
         direction: vector!(0.0, 0.0, 1.0),
     };
 
-    let sphere = Sphere {};
+    let sphere = Sphere::init();
     let intersections = charles.intersect(&sphere);
 
     let a = Intersection {
@@ -80,7 +80,7 @@ fn test_intersection_none() {
         direction: vector!(0.0, 0.0, 1.0),
     };
 
-    let intersections = charles.intersect(&Sphere {});
+    let intersections = charles.intersect(&Sphere::init());
 
     assert_eq!(intersections.len(), 0);
 }
@@ -92,7 +92,7 @@ fn test_intersection_inside_sphere() {
         direction: vector!(0.0, 0.0, 1.0),
     };
 
-    let sphere = Sphere {};
+    let sphere = Sphere::init();
     let intersections = charles.intersect(&sphere);
 
     let a = Intersection {
@@ -115,7 +115,7 @@ fn test_intersection_sphere_behind_ray() {
         direction: vector!(0.0, 0.0, 1.0),
     };
 
-    let sphere = Sphere {};
+    let sphere = Sphere::init();
     let intersections = charles.intersect(&sphere);
 
     let a = Intersection {
@@ -135,22 +135,22 @@ fn test_intersection_sphere_behind_ray() {
 fn test_intersection_obj() {
     let intersect = Intersection {
         t: 3.5,
-        object: Sphere {},
+        object: Sphere::init(),
     };
 
     assert_eq!(intersect.t, 3.5);
-    assert_eq!(intersect.object, Sphere {});
+    assert_eq!(intersect.object, Sphere::init());
 }
 
 #[test]
 fn test_hit() {
     let i1 = Intersection {
         t: 1.0,
-        object: Sphere {},
+        object: Sphere::init(),
     };
     let i2 = Intersection {
         t: 2.0,
-        object: Sphere {},
+        object: Sphere::init(),
     };
 
     let intersections = IntersectList(vec![i1.clone(), i2.clone()]);
@@ -162,11 +162,11 @@ fn test_hit() {
 fn test_hit_negative() {
     let i1 = Intersection {
         t: -1.0,
-        object: Sphere {},
+        object: Sphere::init(),
     };
     let i2 = Intersection {
         t: 1.0,
-        object: Sphere {},
+        object: Sphere::init(),
     };
 
     let intersections = IntersectList(vec![i1.clone(), i2.clone()]);
@@ -214,11 +214,11 @@ fn test_ray_transform_scaling() {
 fn test_hit_all_negative() {
     let i1 = Intersection {
         t: -1.0,
-        object: Sphere {},
+        object: Sphere::init(),
     };
     let i2 = Intersection {
         t: -1.0,
-        object: Sphere {},
+        object: Sphere::init(),
     };
 
     let intersections = IntersectList(vec![i1, i2]);

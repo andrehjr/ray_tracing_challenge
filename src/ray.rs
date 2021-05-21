@@ -1,3 +1,4 @@
+use crate::material::*;
 use crate::matrix::*;
 use crate::point;
 use crate::tuple::*;
@@ -10,7 +11,31 @@ pub struct Ray {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Sphere {
-    //    pub transform: Matrix
+    pub transform: Matrix,
+    pub material: Material,
+}
+
+impl Sphere {
+    pub fn normal_at(&self, world_point: Tuple) -> Tuple {
+        //        (point - point!(0.0, 0.0, 0.0)).norm()
+
+        let object_point = self.transform.inverse() * world_point;
+        let object_normal = object_point - point!(0.0, 0.0, 0.0);
+        let mut world_normal = self.transform.inverse().transpose() * object_normal;
+        // hacky
+        world_normal.w = 0.0;
+        world_normal.norm()
+    }
+
+    pub fn init() -> Sphere {
+        Sphere {
+            transform: Matrix::identity(4),
+            material: Material::default(),
+        }
+    }
+
+    //    pub fn set_transform(&mut self, matrix: Matrix) {
+    //    }
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -41,20 +66,20 @@ impl Ray {
     pub fn transform(&self, transformation: Matrix) -> Self {
         Self {
             origin: transformation.clone() * self.origin,
-            direction: transformation.clone() * self.direction,
+            direction: transformation * self.direction,
         }
     }
 
     pub fn intersect(&self, sphere: &Sphere) -> Vec<Intersection> {
         let sphere_to_ray = self.origin - point!(0.0, 0.0, 0.0);
-        //        let transformed = self.transform(sphere.transform.inverse());
-        //        let sphere_to_ray = transformed.origin - point!(0.0, 0.0, 0.0);
+        let transformed = self.transform(sphere.transform.inverse());
+        let sphere_to_ray = transformed.origin - point!(0.0, 0.0, 0.0);
 
-        //        let a = transformed.direction * transformed.direction;
-        //        let b = 2.0 * (transformed.direction * sphere_to_ray);
+        let a = transformed.direction * transformed.direction;
+        let b = 2.0 * (transformed.direction * sphere_to_ray);
 
-        let a = self.direction * self.direction;
-        let b = 2.0 * (self.direction * sphere_to_ray);
+        // let a = self.direction * self.direction;
+        // let b = 2.0 * (self.direction * sphere_to_ray);
 
         let c = (sphere_to_ray * sphere_to_ray) - 1.0;
         let discriminant = (b * b) - (4.0 * a * c);

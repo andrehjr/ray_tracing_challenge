@@ -26,6 +26,30 @@ impl Matrix {
         self.matrix[x][y]
     }
 
+    pub fn translation(&self, x: f64, y: f64, z: f64) -> Self {
+        let transform = matrix![ 1.0, 0.0, 0.0, x;
+                                 0.0, 1.0, 0.0, y;
+                                 0.0, 0.0, 1.0, z;
+                                 0.0, 0.0, 0.0, 1.0];
+        transform * self.clone()
+    }
+
+    pub fn rotation_z(&self, x: f64) -> Self {
+        let transform = matrix![ x.cos(), -x.sin(), 0.0, 0.0;
+                                 x.sin(), x.cos(), 0.0, 0.0;
+                                 0.0, 0.0, 1.0, 0.0;
+                                 0.0, 0.0, 0.0, 1.0];
+        transform * self.clone()
+    }
+
+    pub fn scaling(&self, x: f64, y: f64, z: f64) -> Self {
+        let transform = matrix![   x, 0.0, 0.0, 0.0;
+                                 0.0,   y, 0.0, 0.0;
+                                 0.0, 0.0,   z, 0.0;
+                                 0.0, 0.0, 0.0, 1.0];
+        transform * self.clone()
+    }
+
     pub fn determinant(&self) -> f64 {
         if self.matrix.len() == 2 && self.matrix[0].len() == 2 {
             (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[0][1] * self.matrix[1][0])

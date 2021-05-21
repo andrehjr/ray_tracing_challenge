@@ -167,3 +167,19 @@ fn test_color_hadamard_product() {
 
     assert_eq!(color_three, color!(0.9, 0.2, 0.04));
 }
+
+#[test]
+fn test_reflect_tuple() {
+    let vector = vector!(1.0, -1.0, 0.0);
+    let normal = vector!(0.0, 1.0, 0.0);
+
+    assert_eq!(vector.reflect(normal), vector!(1.0, 1.0, 0.0));
+}
+
+#[test]
+fn test_reflect_slanted_surface() {
+    let vector = vector!(0.0, -1.0, 0.0);
+    let normal = vector!(2.0_f64.sqrt() / 2.0, 2.0_f64.sqrt() / 2.0, 0.0);
+
+    assert_eq!(vector.reflect(normal), vector!(1.0, 0.0, 0.0));
+}

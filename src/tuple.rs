@@ -75,6 +75,10 @@ impl Tuple {
         *self * (1.0 / self.magnitude())
     }
 
+    pub fn reflect(&self, normal: Tuple) -> Tuple {
+        *self - normal * 2.0 * (*self * normal)
+    }
+
     pub fn cross_product(&self, other: Tuple) -> Self {
         Self {
             x: self.y * other.z - self.z * other.y,
@@ -142,7 +146,7 @@ impl PartialEq for Tuple {
         let y_diff = (self.y - other.y).abs() <= EPSILON;
         let z_diff = (self.z - other.z).abs() <= EPSILON;
 
-        x_diff && y_diff && z_diff
+        x_diff && y_diff && z_diff && self.w == other.w
     }
 }
 
