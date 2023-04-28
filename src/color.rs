@@ -70,7 +70,7 @@ impl Mul<Color> for Color {
 #[macro_export]
 macro_rules! color {
     ($red:expr, $green: expr, $blue: expr) => {
-        Color {
+        color::Color {
             red: $red as f64,
             green: $green as f64,
             blue: $blue as f64,

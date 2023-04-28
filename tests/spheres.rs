@@ -30,6 +30,11 @@ fn test_sphere_normal() {
     );
 
     assert_eq!(sphere.normal_at(nonaxial), vector_result);
+
+    // assert a normalized vector is returned
+    let normal = sphere.normal_at(nonaxial);
+    let normalized = normal.norm();
+    assert_eq!(normal, normalized);
 }
 
 #[test]

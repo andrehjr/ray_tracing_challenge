@@ -22,22 +22,26 @@ pub fn lightning(
 
     let ambient = effective_color * material.ambient;
 
-    let light_dot_normal = lightv * normalv; // -> f64
+    let light_dot_normal = lightv * normalv;
 
     let mut diffuse = color!(0.0, 0.0, 0.0);
     let mut specular = color!(0.0, 0.0, 0.0);
 
-    if light_dot_normal >= 0.0 {
-        diffuse = effective_color * material.diffuse * light_dot_normal;
-
-        let reflectv = lightv.negate().reflect(normalv);
-        let reflect_dot_eye = reflectv * eyev;
-
-        if reflect_dot_eye >= 0.0 {
-            let factor = reflect_dot_eye.powf(material.shininess);
-            specular = light.intensity * material.specular * factor;
-        }
+    if light_dot_normal < 0.0 {
+        return ambient + diffuse + specular;
     }
 
-    ambient + diffuse + specular
+    diffuse = effective_color * material.diffuse * light_dot_normal;
+
+    let reflectv = lightv.negate().reflect(normalv);
+    let reflect_dot_eye = reflectv * eyev;
+
+    if reflect_dot_eye <= 0.0 {
+        return ambient + diffuse + specular
+    }
+
+    let factor = reflect_dot_eye.powf(material.shininess);
+    specular = light.intensity * material.specular * factor;
+    return ambient + diffuse + specular
+
 }

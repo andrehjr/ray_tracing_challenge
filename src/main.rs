@@ -13,17 +13,17 @@ fn main() {
 
     let _color = color!(1.0, 0.0, 0.0); // red
                                         // let blue = color!(0.0, 0.0, 1.0);
-    let transform_skew = matrix![ 1.0, 1.0, 0.0, 0.0;
-           	                      0.0, 1.0, 0.0, 0.0;
-        	                      0.0, 0.0, 1.0, 0.0;
-            	                  0.0, 0.0, 0.0, 1.0];
+    // let transform_skew = matrix![ 1.0, 1.0, 0.0, 0.0;
+    //        	                      0.0, 1.0, 0.0, 0.0;
+    //     	                      0.0, 0.0, 1.0, 0.0;
+    //         	                  0.0, 0.0, 0.0, 1.0];
 
     let material = Material {
         ambient: 0.1,
         diffuse: 0.9,
         specular: 0.9,
         shininess: 200.0,
-        color: color!(1.0, 1.0, 1.0),
+        color: color!(1.0, 0.2, 1.0),
     };
 
     let _sphere = Sphere {
@@ -32,7 +32,7 @@ fn main() {
     };
 
     let light = Light {
-        intensity: color!(0.0, 1.0, 0.0),
+        intensity: color!(1.0, 1.0, 1.0),
         position: point!(-10.0, 10.0, -10.0),
     };
 
