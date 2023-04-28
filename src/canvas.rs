@@ -1,4 +1,3 @@
-use crate::color;
 use crate::color::Color;
 
 pub struct Canvas {
@@ -9,7 +8,7 @@ pub struct Canvas {
 
 impl Canvas {
     pub fn init(width: usize, height: usize) -> Canvas {
-        let pixels = vec![vec![color!(0.0, 0.0, 0.0); width]; height];
+        let pixels = vec![vec![Color::new(0.0, 0.0, 0.0); width]; height];
 
         Canvas {
             width,
@@ -18,8 +17,8 @@ impl Canvas {
         }
     }
 
-    pub fn pixel_at(&self, x: usize, y: usize) -> Color {
-        self.pixels[y][x]
+    pub fn pixel_at(&self, x: usize, y: usize) -> &Color {
+        &self.pixels[y][x]
     }
 
     pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {

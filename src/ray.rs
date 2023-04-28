@@ -3,7 +3,7 @@ use crate::matrix::*;
 use crate::point;
 use crate::tuple::*;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug)]
 pub struct Ray {
     pub origin: Tuple,
     pub direction: Tuple,
@@ -18,16 +18,15 @@ impl Ray {
         self.origin + (self.direction * time)
     }
 
-    pub fn transform(&self, transformation: Matrix) -> Self {
+    pub fn transform(&self, transformation: &Matrix) -> Self {
         Self {
-            origin: transformation.clone() * self.origin,
+            origin: transformation * self.origin,
             direction: transformation * self.direction,
         }
     }
 
-    pub fn intersect(&self, sphere: &Sphere) -> Vec<Intersection> {
-        let sphere_to_ray = self.origin - point!(0.0, 0.0, 0.0);
-        let transformed = self.transform(sphere.transform.inverse());
+    pub fn intersect<'a>(&'a self, sphere: &'a Sphere) -> Vec<Intersection> {
+        let transformed = self.transform(&sphere.transform.inverse());
         let sphere_to_ray = transformed.origin - point!(0.0, 0.0, 0.0);
 
         let a = transformed.direction * transformed.direction;
@@ -47,11 +46,11 @@ impl Ray {
 
             let a = Intersection {
                 t: t1,
-                object: sphere.clone(),
+                object: sphere,
             };
             let b = Intersection {
                 t: t2,
-                object: sphere.clone(),
+                object: sphere,
             };
 
             vec![a, b]
@@ -59,7 +58,7 @@ impl Ray {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Sphere {
     pub transform: Matrix,
     pub material: Material,
@@ -88,13 +87,13 @@ impl Sphere {
     //    }
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct Intersection {
+#[derive(Debug, PartialEq, Clone)]
+pub struct Intersection<'a> {
     pub t: f64,
-    pub object: Sphere,
+    pub object: &'a Sphere,
 }
 
-impl Intersection {
+impl Intersection<'_> {
     pub fn prepare_computations(&self, ray: Ray) -> Computation {
         let point = ray.position(self.t);
         let eyev = ray.direction.negate();
@@ -109,20 +108,16 @@ impl Intersection {
     }
 }
 
-#[derive(Debug)]
-pub struct IntersectList(pub Vec<Intersection>);
 
-impl IntersectList {
-    pub fn hit(&self) -> Option<Intersection> {
-        // <=>
-        self.0
-            .iter()
-            .cloned()
-            .filter(|x| x.t.is_sign_positive())
-            .min_by(|a, b| a.t.partial_cmp(&b.t).unwrap())
-    }
-
+pub fn hit<'a> (intersections: &'a Vec<Intersection>) -> Option<&'a Intersection<'a>> {
+    // take the first positive intersection
+    // and return the minimum of those
+    intersections
+        .iter()
+        .filter(|x| x.t.is_sign_positive())
+        .min_by(|a, b| a.t.partial_cmp(&b.t).unwrap())
 }
+
 
 pub struct Computation<'a> {
     pub t: f64,

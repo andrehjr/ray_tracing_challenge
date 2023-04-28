@@ -7,7 +7,7 @@ fn test_default_world() {
 
     assert_eq!(world.objects.len(), 2);
     let sphere = &world.objects[0];
-    assert_eq!(sphere.material.color, color!(0.8, 1.0, 0.6));
+    assert_eq!(sphere.material.color, Color::new(0.8, 1.0, 0.6));
     assert_eq!(sphere.material.ambient, 0.1);
     assert_eq!(sphere.material.diffuse, 0.7);
     assert_eq!(sphere.material.specular, 0.2);
@@ -17,7 +17,7 @@ fn test_default_world() {
 
     let light = world.light;
     assert_eq!(light.position, point!(-10.0, 10.0, -10.0));
-    assert_eq!(light.intensity, color!(1.0, 1.0, 1.0));
+    assert_eq!(light.intensity, Color::new(1.0, 1.0, 1.0));
 }
 
 // test intersect a world with a ray

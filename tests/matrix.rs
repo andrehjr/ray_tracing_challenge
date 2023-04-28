@@ -66,7 +66,7 @@ fn test_matrix_identity_multiply() {
 				           0.0, 0.0, 0.0, 1.0];
 
     let identity = Matrix::identity(4);
-    let result = identity * matrix_a.clone();
+    let result = identity * &matrix_a;
     assert_eq!(matrix_a, result);
 }
 
@@ -183,7 +183,7 @@ fn test_inverse_matrix_multiplication() {
 							7.0, 0.0, 5.0, 4.0;
 							6.0, -2.0, 0.0, 5.0];
 
-    let a_x_b = matrix_a.clone() * matrix_b.clone();
+    let a_x_b = &matrix_a * &matrix_b;
 
     assert_eq!(matrix_a, a_x_b * matrix_b.inverse());
 }

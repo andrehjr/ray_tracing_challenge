@@ -2,11 +2,11 @@ use raytracer::*;
 
 #[test]
 fn test_light_has_position_and_intensity() {
-    let intensity = color!(1.0, 1.0, 1.0);
+    let intensity = Color::new(1.0, 1.0, 1.0);
     let position = point!(0.0, 0.0, 0.0);
 
     let light = Light {
-        intensity: intensity,
+        intensity: intensity.clone(),
         position: position,
     };
 
@@ -24,12 +24,12 @@ fn test_lightning_eye_between_light_and_surface() {
 
     let light = Light {
         position: point!(0.0, 0.0, -10.0),
-        intensity: color!(1.0, 1.0, 1.0),
+        intensity: Color::new(1.0, 1.0, 1.0),
     };
 
-    let result = lightning(material, light, position, eyev, normalv);
+    let result = lightning(&material, &light, position, eyev, normalv);
 
-    assert_eq!(result, color!(1.9, 1.9, 1.9));
+    assert_eq!(result, Color::new(1.9, 1.9, 1.9));
 }
 
 #[test]
@@ -42,10 +42,10 @@ fn test_lightning_eye_offset_45() {
 
     let light = Light {
         position: point!(0.0, 0.0, -10.0),
-        intensity: color!(1.0, 1.0, 1.0),
+        intensity: Color::new(1.0, 1.0, 1.0),
     };
 
-    let result = lightning(material, light, position, eyev, normalv);
+    let result = lightning(&material, &light, position, eyev, normalv);
 
-    assert_eq!(result, color!(1.0, 1.0, 1.0));
+    assert_eq!(result, Color::new(1.0, 1.0, 1.0));
 }

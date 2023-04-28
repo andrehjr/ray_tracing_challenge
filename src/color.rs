@@ -1,10 +1,16 @@
 use std::ops::{Add, Mul, Sub};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Color {
     pub red: f64,
     pub green: f64,
     pub blue: f64,
+}
+
+impl Color {
+    pub fn new(red: f64, green: f64, blue: f64) -> Color {
+        Color { red, green, blue }
+    }
 }
 
 pub const EPSILON: f64 = 0.001;
@@ -55,6 +61,18 @@ impl Mul<f64> for Color {
     }
 }
 
+impl Mul<f64> for &Color {
+    type Output = Color;
+
+    fn mul(self, factor: f64) -> Color {
+        Color {
+            red: self.red * factor,
+            green: self.green * factor,
+            blue: self.blue * factor,
+        }
+    }
+}
+
 impl Mul<Color> for Color {
     type Output = Self;
 
@@ -67,13 +85,26 @@ impl Mul<Color> for Color {
     }
 }
 
-#[macro_export]
-macro_rules! color {
-    ($red:expr, $green: expr, $blue: expr) => {
-        color::Color {
-            red: $red as f64,
-            green: $green as f64,
-            blue: $blue as f64,
+impl Mul<&Color> for &Color {
+    type Output = Color;
+
+    fn mul(self, other: &Color) -> Color {
+        Color {
+            red: self.red * other.red,
+            green: self.green * other.green,
+            blue: self.blue * other.blue,
         }
-    };
+    }
+}
+
+impl Mul<&Color> for Color {
+    type Output = Self;
+
+    fn mul(self, other: &Color) -> Self {
+        Self {
+            red: self.red * other.red,
+            green: self.green * other.green,
+            blue: self.blue * other.blue,
+        }
+    }
 }

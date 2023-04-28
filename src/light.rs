@@ -1,22 +1,21 @@
-use crate::color;
 use crate::color::*;
 use crate::material::*;
 use crate::tuple::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct Light {
     pub intensity: Color,
     pub position: Tuple,
 }
 
 pub fn lightning(
-    material: Material,
-    light: Light,
+    material: &Material,
+    light: &Light,
     position: Tuple,
     eyev: Tuple,
     normalv: Tuple,
 ) -> Color {
-    let effective_color = material.color * light.intensity;
+    let effective_color = &(&material.color * &light.intensity);
 
     let lightv = (light.position - position).norm();
 
@@ -24,8 +23,8 @@ pub fn lightning(
 
     let light_dot_normal = lightv * normalv;
 
-    let mut diffuse = color!(0.0, 0.0, 0.0);
-    let mut specular = color!(0.0, 0.0, 0.0);
+    let mut diffuse = Color::new(0.0, 0.0, 0.0);
+    let mut specular = Color::new(0.0, 0.0, 0.0);
 
     if light_dot_normal < 0.0 {
         return ambient + diffuse + specular;
@@ -41,7 +40,7 @@ pub fn lightning(
     }
 
     let factor = reflect_dot_eye.powf(material.shininess);
-    specular = light.intensity * material.specular * factor;
+    specular = &light.intensity * material.specular * factor;
     return ambient + diffuse + specular
 
 }

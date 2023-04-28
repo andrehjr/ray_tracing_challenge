@@ -1,4 +1,4 @@
-use crate::color;
+use crate::color::*;
 use crate::light::*;
 use crate::material::*;
 use crate::matrix::*;
@@ -13,13 +13,16 @@ pub struct World {
 }
 
 impl World {
+
     pub fn new() -> Self {
+        let light = Light {
+            position: point!(-10.0, 10.0, -10.0),
+            intensity: Color::new(1.0, 1.0, 1.0),
+        };
+
         Self {
             objects: vec![],
-            light: Light {
-                intensity: color!(1.0, 1.0, 1.0),
-                position: point!(-10.0, 10.0, -10.0),
-            },
+            light,
         }
     }
 
@@ -31,7 +34,7 @@ impl World {
             diffuse: 0.7,
             specular: 0.2,
             shininess: 200.0,
-            color: color!(0.8, 1.0, 0.6),
+            color: Color::new(0.8, 1.0, 0.6),
         };
 
         let mut s1 = Sphere::init();
@@ -46,7 +49,7 @@ impl World {
         world
     }
 
-    pub fn intersect(&self, ray: &Ray) -> Vec<Intersection> {
+    pub fn intersect<'a>(&'a self, ray: &'a Ray) -> Vec<Intersection> {
         // iterate over all objects in the world and collect all intersections
         let mut intersections = vec![];
         for object in &self.objects {
