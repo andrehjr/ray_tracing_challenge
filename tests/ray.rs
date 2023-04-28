@@ -225,3 +225,26 @@ fn test_hit_all_negative() {
 
     assert_eq!(intersections.hit(), None);
 }
+
+// test intersection precomputation calculations
+#[test]
+fn test_intersection_precomputation() {
+    let ray = Ray {
+        origin: point!(0.0, 0.0, -5.0),
+        direction: vector!(0.0, 0.0, 1.0),
+    };
+
+    let sphere = Sphere::init();
+    let intersection = Intersection {
+        t: 4.0,
+        object: sphere,
+    };
+
+    let comps = intersection.prepare_computations(ray);
+
+    assert!(comps.t == intersection.t);
+    assert_eq!(comps.object, &intersection.object);
+    assert_eq!(comps.point, point!(0.0, 0.0, -1.0));
+    assert_eq!(comps.eyev, vector!(0.0, 0.0, -1.0));
+    assert_eq!(comps.normalv, vector!(0.0, 0.0, -1.0));
+}

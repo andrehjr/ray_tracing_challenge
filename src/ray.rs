@@ -94,6 +94,21 @@ pub struct Intersection {
     pub object: Sphere,
 }
 
+impl Intersection {
+    pub fn prepare_computations(&self, ray: Ray) -> Computation {
+        let point = ray.position(self.t);
+        let eyev = ray.direction.negate();
+        let normalv = self.object.normal_at(point);
+        Computation {
+            t: self.t,
+            object: &self.object,
+            point,
+            eyev,
+            normalv,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct IntersectList(pub Vec<Intersection>);
 
@@ -106,5 +121,13 @@ impl IntersectList {
             .filter(|x| x.t.is_sign_positive())
             .min_by(|a, b| a.t.partial_cmp(&b.t).unwrap())
     }
+
 }
 
+pub struct Computation<'a> {
+    pub t: f64,
+    pub object: &'a Sphere,
+    pub point: Tuple,
+    pub eyev: Tuple,
+    pub normalv: Tuple,
+}
