@@ -249,4 +249,72 @@ fn test_intersection_precomputation() {
     assert_eq!(comps.point, point!(0.0, 0.0, -1.0));
     assert_eq!(comps.eyev, vector!(0.0, 0.0, -1.0));
     assert_eq!(comps.normalv, vector!(0.0, 0.0, -1.0));
+    assert_eq!(comps.inside, false);
+}
+
+
+// test intersection precomputation calculations when intersection occurs on the inside of the sphere
+#[test]
+fn test_intersection_precomputation_inside() {
+    let ray = Ray {
+        origin: point!(0.0, 0.0, 0.0),
+        direction: vector!(0.0, 0.0, 1.0),
+    };
+
+    let sphere = Sphere::init();
+    let intersection = Intersection {
+        t: 1.0,
+        object: &sphere,
+    };
+
+    let comps = intersection.prepare_computations(ray);
+    assert_eq!(comps.object, intersection.object);
+    assert_eq!(comps.point, point!(0.0, 0.0, 1.0));
+    assert_eq!(comps.eyev, vector!(0.0, 0.0, -1.0));
+    assert_eq!(comps.normalv, vector!(0.0, 0.0, -1.0));
+    assert_eq!(comps.inside, true);
+}
+
+// test shading an intersection
+#[test]
+fn test_shade_intersection() {
+    let world = World::default();
+    let ray = Ray {
+        origin: point!(0.0, 0.0, -5.0),
+        direction: vector!(0.0, 0.0, 1.0),
+    };
+
+    let sphere = &world.objects[0];
+    let intersection = Intersection {
+        t: 4.0,
+        object: sphere,
+    };
+
+    let comps = intersection.prepare_computations(ray);
+    let color = world.shade_hit(&comps);
+
+    assert_eq!(color, Color { red: 0.38066, green: 0.47583, blue: 0.2855});
+}
+
+// test shading an intersection from the inside
+#[test]
+fn test_shade_intersection_inside() {
+    let mut world = World::default();
+    world.light = Light { intensity: color::WHITE, position: point!(0.0, 0.25, 0.0) };
+
+    let ray = Ray {
+        origin: point!(0.0, 0.0, 0.0),
+        direction: vector!(0.0, 0.0, 1.0),
+    };
+
+    let sphere = &world.objects[1];
+    let intersection = Intersection {
+        t: 0.5,
+        object: sphere,
+    };
+
+    let comps = intersection.prepare_computations(ray);
+    let color = world.shade_hit(&comps);
+
+    assert_eq!(color, Color { red: 0.90498, green: 0.90498, blue: 0.90498});
 }

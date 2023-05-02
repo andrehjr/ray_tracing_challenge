@@ -14,6 +14,11 @@ impl Color {
 }
 
 pub const EPSILON: f64 = 0.001;
+pub const WHITE: Color = Color {
+    red: 1.0,
+    green: 1.0,
+    blue: 1.0,
+};
 
 impl PartialEq for Color {
     fn eq(&self, other: &Self) -> bool {

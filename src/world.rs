@@ -1,4 +1,5 @@
 use crate::color::*;
+use crate::light;
 use crate::light::*;
 use crate::material::*;
 use crate::matrix::*;
@@ -60,6 +61,16 @@ impl World {
         intersections.sort_by(|a, b| a.t.partial_cmp(&b.t).unwrap());
         
         intersections
+    }
+
+    pub fn shade_hit(&self, comps: &Computation) -> Color {
+        light::lightning(
+            &comps.object.material,
+            &self.light,
+            comps.point,
+            comps.eyev,
+            comps.normalv,
+        )
     }
 
 }

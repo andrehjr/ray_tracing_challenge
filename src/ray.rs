@@ -97,13 +97,19 @@ impl Intersection<'_> {
     pub fn prepare_computations(&self, ray: Ray) -> Computation {
         let point = ray.position(self.t);
         let eyev = ray.direction.negate();
-        let normalv = self.object.normal_at(point);
+        let mut normalv = self.object.normal_at(point);
+        let mut inside = false;
+        if normalv * eyev < 0.0 {
+            inside = true;
+            normalv = normalv.negate();
+        }
         Computation {
             t: self.t,
             object: &self.object,
             point,
             eyev,
             normalv,
+            inside,
         }
     }
 }
@@ -125,4 +131,5 @@ pub struct Computation<'a> {
     pub point: Tuple,
     pub eyev: Tuple,
     pub normalv: Tuple,
+    pub inside: bool,
 }
