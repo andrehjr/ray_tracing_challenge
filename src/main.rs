@@ -12,11 +12,11 @@ fn main() {
     let half = wall_size / 2.0;
 
     let _color = Color::new(1.0, 0.0, 0.0); // red
-                                        // let blue = Color::new(0.0, 0.0, 1.0);
-    // let transform_skew = matrix![ 1.0, 1.0, 0.0, 0.0;
-    //        	                      0.0, 1.0, 0.0, 0.0;
-    //     	                      0.0, 0.0, 1.0, 0.0;
-    //         	                  0.0, 0.0, 0.0, 1.0];
+                                            // let blue = Color::new(0.0, 0.0, 1.0);
+                                            // let transform_skew = matrix![ 1.0, 1.0, 0.0, 0.0;
+                                            //        	                      0.0, 1.0, 0.0, 0.0;
+                                            //     	                      0.0, 0.0, 1.0, 0.0;
+                                            //         	                  0.0, 0.0, 0.0, 1.0];
 
     let material = Material {
         ambient: 0.1,
@@ -58,8 +58,7 @@ fn main() {
                 let normal = hit.object.normal_at(point);
                 let eye = ray.direction.negate();
 
-                let lightning_color =
-                    lightning(&hit.object.material, &light, point, eye, normal);
+                let lightning_color = lightning(&hit.object.material, &light, point, eye, normal);
 
                 canvas.write_pixel(x, y, lightning_color);
             }

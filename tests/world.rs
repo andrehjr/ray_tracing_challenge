@@ -34,3 +34,42 @@ fn test_intersect_world() {
     assert_eq!(intersections[2].t, 5.5);
     assert_eq!(intersections[3].t, 6.0);
 }
+
+// coloring tests
+// test coloring when a ray misses
+#[test]
+fn test_color_ray_miss() {
+    let world = World::default();
+    let ray = Ray::new(point!(0.0, 0.0, -5.0), vector!(0.0, 1.0, 0.0));
+
+    let color = world.color_at(&ray);
+
+    assert_eq!(color, Color::new(0.0, 0.0, 0.0));
+}
+
+// test coloring when a ray hits
+#[test]
+fn test_color_ray_hit() {
+    let world = World::default();
+    let ray = Ray::new(point!(0.0, 0.0, -5.0), vector!(0.0, 0.0, 1.0));
+
+    let color = world.color_at(&ray);
+
+    assert_eq!(color, Color::new(0.38066, 0.47583, 0.2855));
+}
+
+// test coloring with an intersection behind the ray
+#[test]
+fn test_color_ray_behind() {
+    let mut world = World::default();
+    let mut outer = &mut world.objects[0];
+    outer.material.ambient = 1.0;
+    let mut inner = &mut world.objects[1];
+    inner.material.ambient = 1.0;
+
+    let ray = Ray::new(point!(0.0, 0.0, 0.75), vector!(0.0, 0.0, -1.0));
+
+    let color = world.color_at(&ray);
+
+    assert_eq!(color, world.objects[1].material.color);
+}

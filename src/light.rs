@@ -36,11 +36,10 @@ pub fn lightning(
     let reflect_dot_eye = reflectv * eyev;
 
     if reflect_dot_eye <= 0.0 {
-        return ambient + diffuse + specular
+        return ambient + diffuse + specular;
     }
 
     let factor = reflect_dot_eye.powf(material.shininess);
     specular = &light.intensity * material.specular * factor;
-    return ambient + diffuse + specular
-
+    return ambient + diffuse + specular;
 }

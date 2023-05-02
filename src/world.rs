@@ -3,8 +3,8 @@ use crate::light;
 use crate::light::*;
 use crate::material::*;
 use crate::matrix::*;
-use crate::ray::*;
 use crate::point;
+use crate::ray::*;
 use crate::tuple::*;
 
 // World struct contains a list of all objects in the scene and a light source
@@ -14,7 +14,6 @@ pub struct World {
 }
 
 impl World {
-
     pub fn new() -> Self {
         Self {
             objects: vec![],
@@ -61,7 +60,7 @@ impl World {
         }
         // sort intersections by t value
         intersections.sort_by(|a, b| a.t.partial_cmp(&b.t).unwrap());
-        
+
         intersections
     }
 
@@ -69,15 +68,24 @@ impl World {
         let mut current_color = Color::new(0.0, 0.0, 0.0);
         for light in &self.lights {
             let color = light::lightning(
-            &comps.object.material,
-            light,
-            comps.point,
-            comps.eyev,
-            comps.normalv,
-        );
+                &comps.object.material,
+                light,
+                comps.point,
+                comps.eyev,
+                comps.normalv,
+            );
             current_color = current_color + color;
         }
         return current_color;
     }
 
+    pub fn color_at(&self, ray: &Ray) -> Color {
+        let intersections = self.intersect(ray);
+        if intersections.len() == 0 {
+            return Color::new(0.0, 0.0, 0.0);
+        }
+        let intersection = intersections.into_iter().find(|i| i.t >= 0.0).unwrap();
+        let comps = intersection.prepare_computations(ray);
+        return self.shade_hit(&comps);
+    }
 }

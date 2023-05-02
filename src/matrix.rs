@@ -55,7 +55,7 @@ impl Matrix {
             (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[0][1] * self.matrix[1][0])
         } else {
             let first_line = &self.matrix[0];
-            first_line 
+            first_line
                 .into_iter()
                 .enumerate()
                 .fold(0.0, |acc, (y, item)| acc + (item * self.cofactor(0, y)))
@@ -73,7 +73,9 @@ impl Matrix {
                     current_line
                         .into_iter()
                         .enumerate()
-                        .filter_map(|(index, item)| if index != column { Some(*item) } else { None })
+                        .filter_map(
+                            |(index, item)| if index != column { Some(*item) } else { None },
+                        )
                         .collect::<Vec<f64>>(),
                 );
             }
@@ -157,9 +159,9 @@ impl PartialEq for Matrix {
 }
 
 impl<'a> Mul<Tuple> for &'a Matrix {
-   type Output = Tuple; 
+    type Output = Tuple;
 
-   fn mul(self, tuple: Tuple) -> Self::Output {
+    fn mul(self, tuple: Tuple) -> Self::Output {
         let matrix = matrix![tuple.x; tuple.y ; tuple.z; tuple.w ];
         let result = self * &matrix;
 
