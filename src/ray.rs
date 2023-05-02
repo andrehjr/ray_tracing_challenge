@@ -94,7 +94,7 @@ pub struct Intersection<'a> {
 }
 
 impl Intersection<'_> {
-    pub fn prepare_computations(&self, ray: Ray) -> Computation {
+    pub fn prepare_computations(&self, ray: &Ray) -> Computation {
         let point = ray.position(self.t);
         let eyev = ray.direction.negate();
         let mut normalv = self.object.normal_at(point);
@@ -114,8 +114,7 @@ impl Intersection<'_> {
     }
 }
 
-
-pub fn hit<'a> (intersections: &'a Vec<Intersection>) -> Option<&'a Intersection<'a>> {
+pub fn hit<'a>(intersections: &'a Vec<Intersection>) -> Option<&'a Intersection<'a>> {
     // take the first positive intersection
     // and return the minimum of those
     intersections
@@ -123,7 +122,6 @@ pub fn hit<'a> (intersections: &'a Vec<Intersection>) -> Option<&'a Intersection
         .filter(|x| x.t.is_sign_positive())
         .min_by(|a, b| a.t.partial_cmp(&b.t).unwrap())
 }
-
 
 pub struct Computation<'a> {
     pub t: f64,

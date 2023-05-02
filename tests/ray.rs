@@ -252,7 +252,6 @@ fn test_intersection_precomputation() {
     assert_eq!(comps.inside, false);
 }
 
-
 // test intersection precomputation calculations when intersection occurs on the inside of the sphere
 #[test]
 fn test_intersection_precomputation_inside() {
@@ -293,14 +292,24 @@ fn test_shade_intersection() {
     let comps = intersection.prepare_computations(ray);
     let color = world.shade_hit(&comps);
 
-    assert_eq!(color, Color { red: 0.38066, green: 0.47583, blue: 0.2855});
+    assert_eq!(
+        color,
+        Color {
+            red: 0.38066,
+            green: 0.47583,
+            blue: 0.2855
+        }
+    );
 }
 
 // test shading an intersection from the inside
 #[test]
 fn test_shade_intersection_inside() {
     let mut world = World::default();
-    world.lights = vec![ Light { intensity: color::WHITE, position: point!(0.0, 0.25, 0.0) }];
+    world.lights = vec![Light {
+        intensity: color::WHITE,
+        position: point!(0.0, 0.25, 0.0),
+    }];
 
     let ray = Ray {
         origin: point!(0.0, 0.0, 0.0),
@@ -316,5 +325,12 @@ fn test_shade_intersection_inside() {
     let comps = intersection.prepare_computations(ray);
     let color = world.shade_hit(&comps);
 
-    assert_eq!(color, Color { red: 0.90498, green: 0.90498, blue: 0.90498});
+    assert_eq!(
+        color,
+        Color {
+            red: 0.90498,
+            green: 0.90498,
+            blue: 0.90498
+        }
+    );
 }
