@@ -15,7 +15,7 @@ fn test_default_world() {
     let sphere = &world.objects[1];
     assert_eq!(sphere.transform, Matrix::identity(4).scaling(0.5, 0.5, 0.5));
 
-    let light = world.light;
+    let light = &world.lights[0];
     assert_eq!(light.position, point!(-10.0, 10.0, -10.0));
     assert_eq!(light.intensity, Color::new(1.0, 1.0, 1.0));
 }

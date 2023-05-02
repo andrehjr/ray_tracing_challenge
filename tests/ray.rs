@@ -300,7 +300,7 @@ fn test_shade_intersection() {
 #[test]
 fn test_shade_intersection_inside() {
     let mut world = World::default();
-    world.light = Light { intensity: color::WHITE, position: point!(0.0, 0.25, 0.0) };
+    world.lights = vec![ Light { intensity: color::WHITE, position: point!(0.0, 0.25, 0.0) }];
 
     let ray = Ray {
         origin: point!(0.0, 0.0, 0.0),

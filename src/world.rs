@@ -10,25 +10,27 @@ use crate::tuple::*;
 // World struct contains a list of all objects in the scene and a light source
 pub struct World {
     pub objects: Vec<Sphere>,
-    pub light: Light,
+    pub lights: Vec<Light>,
 }
 
 impl World {
 
     pub fn new() -> Self {
-        let light = Light {
-            position: point!(-10.0, 10.0, -10.0),
-            intensity: Color::new(1.0, 1.0, 1.0),
-        };
-
         Self {
             objects: vec![],
-            light,
+            lights: vec![],
         }
     }
 
     pub fn default() -> Self {
         let mut world = Self::new();
+
+        let light = Light {
+            position: point!(-10.0, 10.0, -10.0),
+            intensity: Color::new(1.0, 1.0, 1.0),
+        };
+
+        world.lights.push(light);
 
         let material = Material {
             ambient: 0.1,
@@ -64,13 +66,18 @@ impl World {
     }
 
     pub fn shade_hit(&self, comps: &Computation) -> Color {
-        light::lightning(
+        let mut current_color = Color::new(0.0, 0.0, 0.0);
+        for light in &self.lights {
+            let color = light::lightning(
             &comps.object.material,
-            &self.light,
+            light,
             comps.point,
             comps.eyev,
             comps.normalv,
-        )
+        );
+            current_color = current_color + color;
+        }
+        return current_color;
     }
 
 }
