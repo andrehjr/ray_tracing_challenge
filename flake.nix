@@ -14,7 +14,21 @@
       {
         defaultPackage = naersk-lib.buildPackage ./.;
         devShell = with pkgs; mkShell {
-          buildInputs = [ cargo rustc rustfmt pre-commit rustPackages.clippy ];
+          buildInputs = [
+            cargo
+            rustc
+            rustfmt
+            pre-commit
+            rustPackages.clippy
+
+            cargo-deny
+
+            cargo-edit
+            cargo-watch
+
+            # Spelling and linting
+            codespell
+            ];
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
           shellHook = ''
             export DYLD_LIBRARY_PATH=${rustc}/lib:$DYLD_LIBRARY_PATH

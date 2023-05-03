@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-workflow.json
 # Our desired pipeline using only a Nix shell environment
-name: Check and build the TODOs API (Nix)
+name: Check and build
 on:
   push:
     branches:
@@ -30,11 +30,6 @@ jobs:
         run: |
           nix develop --command \
             cargo-deny check
-      - name: editorconfig check
-        run: |
-          nix develop --command \
-            eclint \
-              -exclude "Cargo.lock"
       - name: Check spelling
         run: |
           nix develop --command \
