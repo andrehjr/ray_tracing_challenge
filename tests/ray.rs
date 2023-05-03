@@ -242,7 +242,7 @@ fn test_intersection_precomputation() {
         object: &sphere,
     };
 
-    let comps = intersection.prepare_computations(ray);
+    let comps = intersection.prepare_computations(&ray);
 
     assert!(comps.t == intersection.t);
     assert_eq!(comps.object, intersection.object);
@@ -266,7 +266,7 @@ fn test_intersection_precomputation_inside() {
         object: &sphere,
     };
 
-    let comps = intersection.prepare_computations(ray);
+    let comps = intersection.prepare_computations(&ray);
     assert_eq!(comps.object, intersection.object);
     assert_eq!(comps.point, point!(0.0, 0.0, 1.0));
     assert_eq!(comps.eyev, vector!(0.0, 0.0, -1.0));
@@ -289,7 +289,7 @@ fn test_shade_intersection() {
         object: sphere,
     };
 
-    let comps = intersection.prepare_computations(ray);
+    let comps = intersection.prepare_computations(&ray);
     let color = world.shade_hit(&comps);
 
     assert_eq!(
@@ -322,7 +322,7 @@ fn test_shade_intersection_inside() {
         object: sphere,
     };
 
-    let comps = intersection.prepare_computations(ray);
+    let comps = intersection.prepare_computations(&ray);
     let color = world.shade_hit(&comps);
 
     assert_eq!(
