@@ -30,11 +30,6 @@ jobs:
         run: |
           nix develop --command \
             cargo-deny check
-      - name: editorconfig check
-        run: |
-          nix develop --command \
-            eclint \
-              -exclude "Cargo.lock"
       - name: Check spelling
         run: |
           nix develop --command \

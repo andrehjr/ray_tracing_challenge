@@ -28,7 +28,6 @@
 
             # Spelling and linting
             codespell
-            eclint
             ];
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
           shellHook = ''
