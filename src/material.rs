@@ -1,7 +1,6 @@
-use crate::color;
 use crate::color::*;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Material {
     pub color: Color,
     pub ambient: f64,
@@ -17,7 +16,7 @@ impl Material {
             diffuse: 0.9,
             specular: 0.9,
             shininess: 200.0,
-            color: color!(1.0, 1.0, 1.0),
+            color: Color::new(1.0, 1.0, 1.0),
         }
     }
 }

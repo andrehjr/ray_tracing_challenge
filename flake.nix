@@ -16,6 +16,9 @@
         devShell = with pkgs; mkShell {
           buildInputs = [ cargo rustc rustfmt pre-commit rustPackages.clippy ];
           RUST_SRC_PATH = rustPlatform.rustLibSrc;
+          shellHook = ''
+            export DYLD_LIBRARY_PATH=${rustc}/lib:$DYLD_LIBRARY_PATH
+          '';
         };
       });
 }
