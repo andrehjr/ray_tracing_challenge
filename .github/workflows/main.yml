@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-workflow.json
 # Our desired pipeline using only a Nix shell environment
-name: Check and build the TODOs API (Nix)
+name: Check and build
 on:
   push:
     branches:
