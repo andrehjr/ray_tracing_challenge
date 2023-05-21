@@ -203,3 +203,51 @@ fn test_transpose() {
     assert_eq!(matrix_a.transpose(), transposed);
     assert_eq!(Matrix::identity(4), Matrix::identity(4).transpose());
 }
+
+#[test]
+fn test_view_transform() {
+    let from = point!(0.0, 0.0, 0.0);
+    let to = point!(0.0, 0.0, -1.0);
+    let up = vector!(0.0, 1.0, 0.0);
+
+    let t = view_transform(from, to, up);
+
+    assert_eq!(t, Matrix::identity(4));
+
+}
+
+#[test]
+fn test_view_transform_looking_in_the_positive_z_direction() {
+    let from = point!(0.0, 0.0, 0.0);
+    let to = point!(0.0, 0.0, 1.0);
+    let up = vector!(0.0, 1.0, 0.0);
+
+    let t = view_transform(from, to, up);
+
+    assert_eq!(t, Matrix::identity(4).scaling(-1.0, 1.0, -1.0));
+}
+
+#[test]
+fn test_view_transform_moves_the_world() {
+    let from = point!(0.0, 0.0, 8.0);
+    let to = point!(0.0, 0.0, 0.0);
+    let up = vector!(0.0, 1.0, 0.0);
+
+    let t = view_transform(from, to, up);
+
+    assert_eq!(t, Matrix::identity(4).translation(0.0, 0.0, -8.0));
+}
+
+#[test]
+fn test_arbirtrary_view_transformation() {
+    let from = point!(1.0, 3.0, 2.0);
+    let to = point!(4.0, -2.0, 8.0);
+    let up = vector!(1.0, 1.0, 0.0);
+
+    let t = view_transform(from, to, up);
+
+    assert_eq!(t, matrix![-0.50709, 0.50709, 0.67612, -2.36643;
+                           0.76772, 0.60609, 0.12122, -2.82843;
+                           -0.35857, 0.59761, -0.71714, 0.00000;
+                           0.00000, 0.00000, 0.00000, 1.00000]);
+}

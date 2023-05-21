@@ -132,6 +132,20 @@ impl Matrix {
     }
 }
 
+pub fn view_transform(from : Tuple, to : Tuple, up : Tuple) -> Matrix {
+    let forward = (to - from).norm();
+    let upn = up.norm();
+    let left = forward.cross_product(upn);
+    let true_up = left.cross_product(forward);
+
+    let orientation = matrix![ left.x, left.y, left.z, 0.0;
+                               true_up.x, true_up.y, true_up.z, 0.0;
+                               -forward.x, -forward.y, -forward.z, 0.0;
+                               0.0, 0.0, 0.0, 1.0];
+
+    return orientation * Matrix::identity(4).translation(-from.x, -from.y, -from.z);
+}
+
 pub const EPSILON: f64 = 0.001;
 
 impl PartialEq for Matrix {
