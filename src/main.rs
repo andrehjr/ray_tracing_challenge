@@ -19,6 +19,7 @@ fn main() {
         .rotation_x(PI / 2.0)
         .rotation_y(-PI / 4.0)
         .translation(0.0, 0.0, 5.0);
+    left_wall.material = floor_material;
 
     let mut right_wall = ray::Sphere::init();
     right_wall.transform = matrix::Matrix::identity(4)
@@ -26,6 +27,7 @@ fn main() {
         .rotation_x(PI / 2.0)
         .rotation_y(PI / 4.0)
         .translation(0.0, 0.0, 5.0);
+    right_wall.material = floor_material;
 
     let mut middle = ray::Sphere::init();
     middle.transform = matrix::Matrix::identity(4).translation(-0.5, 1.0, 0.5);
@@ -48,7 +50,7 @@ fn main() {
     let mut left = ray::Sphere::init();
     left.transform = matrix::Matrix::identity(4)
         .scaling(0.33, 0.33, 0.33)
-        .translation(1.5, 0.33, -0.75);
+        .translation(-1.5, 0.33, -0.75);
     let mut left_material = material::Material::default();
     left_material.color = color::Color::new(1.0, 0.8, 0.1);
     left_material.diffuse = 0.7;
@@ -64,8 +66,14 @@ fn main() {
         },
         position: point!(-10, 10, -10),
     });
+    world.objects.push(floor);
+    world.objects.push(left_wall);
+    world.objects.push(right_wall);
+    world.objects.push(middle);
+    world.objects.push(right);
+    world.objects.push(left);
 
-    let mut camera = camera::Camera::new(100, 50, FRAC_PI_3);
+    let mut camera = camera::Camera::new(500, 250, FRAC_PI_3);
     camera.transform =
         matrix::view_transform(point!(0, 1.5, -5), point!(0, 1, 0), vector!(0, 1, 0));
 
