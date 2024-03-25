@@ -1,4 +1,7 @@
-use raytracer::*;
+use raytracer::color::Color;
+use raytracer::point;
+use raytracer::tuple::*;
+use raytracer::vector;
 
 #[test]
 fn test_tuple_new() {

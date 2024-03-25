@@ -8,14 +8,3 @@ pub mod ray;
 pub mod tuple;
 pub mod world;
 pub mod camera;
-
-pub use canvas::*;
-pub use color::*;
-pub use light::*;
-pub use material::*;
-pub use matrix::*;
-pub use ppm::*;
-pub use ray::*;
-pub use tuple::*;
-pub use world::*;
-pub use camera::*;
