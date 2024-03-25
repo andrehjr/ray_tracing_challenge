@@ -1,69 +1,62 @@
+use std::f64::consts::{PI, FRAC_PI_3};
+
 use raytracer::*;
 // use std::f64::consts::PI;
 
 fn main() {
-    let canvas_size = 100;
-    let mut canvas = Canvas::init(canvas_size, canvas_size);
+    let mut floor = Sphere::init();
+    floor.transform = Matrix::identity(4).scaling(10.0, 0.01, 10.0);
+    let mut floor_material = Material::default();
+    floor_material.color = Color::new(1.0, 0.9, 0.9);
+    floor_material.specular = 0.0;
+    floor.material = floor_material;
 
-    let ray_origin = point!(0.0, 0.0, -5.0);
-    let wall_z = 10.0;
-    let wall_size = 7.0;
-    let pixels_size = wall_size / canvas_size as f64;
-    let half = wall_size / 2.0;
 
-    let _color = Color::new(1.0, 0.0, 0.0); // red
-                                            // let blue = Color::new(0.0, 0.0, 1.0);
-                                            // let transform_skew = matrix![ 1.0, 1.0, 0.0, 0.0;
-                                            //        	                      0.0, 1.0, 0.0, 0.0;
-                                            //     	                      0.0, 0.0, 1.0, 0.0;
-                                            //         	                  0.0, 0.0, 0.0, 1.0];
+    let mut left_wall = Sphere::init();
+    left_wall.transform = Matrix::identity(4)
+        .scaling(10.0, 0.01, 10.0)
+        .rotation_x(PI / 2.0)
+        .rotation_y(-PI / 4.0)
+        .translation(0.0, 0.0, 5.0);
 
-    let material = Material {
-        ambient: 0.1,
-        diffuse: 0.9,
-        specular: 0.9,
-        shininess: 200.0,
-        color: Color::new(1.0, 0.2, 1.0),
-    };
+    let mut right_wall = Sphere::init();
+    right_wall.transform = Matrix::identity(4)
+        .scaling(10.0, 0.01, 10.0)
+        .rotation_x(PI / 2.0)
+        .rotation_y(PI / 4.0)
+        .translation(0.0, 0.0, 5.0);
 
-    let _sphere = Sphere {
-        material: material,
-        transform: Matrix::identity(4),
-    };
+    let mut middle = Sphere::init();
+    middle.transform = Matrix::identity(4).translation(-0.5, 1.0, 0.5);
+    let mut middle_material = Material::default();
+    middle_material.color = Color::new(0.1, 1.0, 0.5);
+    middle_material.diffuse = 0.7;
+    middle_material.specular = 0.3;
+    middle.material = middle_material;
 
-    let light = Light {
-        intensity: Color::new(1.0, 1.0, 1.0),
-        position: point!(-10.0, 10.0, -10.0),
-    };
+    let mut right = Sphere::init();
+    right.transform = Matrix::identity(4).scaling(0.5,0.5,0.5).translation(1.5, 0.5, -0.5);
+    let mut right_material = Material::default();
+    right_material.color = Color::new(0.5, 1.0, 0.1);
+    right_material.diffuse = 0.7;
+    right_material.specular = 0.3;
+    right.material = right_material;
 
-    for x in 0..canvas_size {
-        let world_x = -half + pixels_size * x as f64;
+    let mut left = Sphere::init();
+    left.transform = Matrix::identity(4).scaling(0.33,0.33,0.33).translation(1.5, 0.33, -0.75);
+    let mut left_material = Material::default();
+    left_material.color = Color::new(1.0, 0.8, 0.1);
+    left_material.diffuse = 0.7;
+    left_material.specular = 0.3;
+    left.material = left_material;
 
-        for y in 0..canvas_size {
-            let world_y = half - pixels_size * y as f64;
+    let mut world = World::new();
+    world.lights.push(Light { intensity: Color { red: 1.0, green: 1.0, blue: 1.0 }, position: point!(-10,10,-10) });
+    
+    let mut camera = Camera::new(100, 50, FRAC_PI_3);
+    camera.transform = view_transform(point!(0,1.5,-5), point!(0,1,0), vector!(0,1,0));
 
-            let position = point!(world_x, world_y, wall_z);
-
-            let ray = Ray {
-                origin: ray_origin,
-                direction: (position - ray_origin).norm(),
-            };
-
-            let hits = ray.intersect(&_sphere);
-
-            if !hits.is_empty() {
-                let hit = hits.first().unwrap();
-                let point = ray.position(hit.t);
-
-                let normal = hit.object.normal_at(point);
-                let eye = ray.direction.negate();
-
-                let lightning_color = lightning(&hit.object.material, &light, point, eye, normal);
-
-                canvas.write_pixel(x, y, lightning_color);
-            }
-        }
-    }
+    let canvas = render(&camera, &world);
 
     let string = canvas_to_ppm(canvas);
     println!("{}", string);

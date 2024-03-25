@@ -7,6 +7,7 @@ pub mod ppm;
 pub mod ray;
 pub mod tuple;
 pub mod world;
+pub mod camera;
 
 pub use canvas::*;
 pub use color::*;
@@ -17,3 +18,4 @@ pub use ppm::*;
 pub use ray::*;
 pub use tuple::*;
 pub use world::*;
+pub use camera::*;

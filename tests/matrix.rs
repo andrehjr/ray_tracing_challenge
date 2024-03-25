@@ -1,4 +1,8 @@
+use std::f64::consts::{FRAC_PI_2, FRAC_PI_4};
+
 use raytracer::*;
+use proptest::prelude::*;
+
 
 #[test]
 fn test_basic_matrix() {
@@ -68,6 +72,17 @@ fn test_matrix_identity_multiply() {
     let identity = Matrix::identity(4);
     let result = identity * &matrix_a;
     assert_eq!(matrix_a, result);
+}
+
+#[test]
+fn test_matrix_rotation_y() {
+    let half_quarter = Matrix::identity(4).rotation_y(FRAC_PI_4);
+    let full_quarter = Matrix::identity(4).rotation_y(FRAC_PI_2);
+
+    let p = point!(0.0, 0.0, 1.0);
+
+    assert_eq!(half_quarter * p, point!(2.0_f64.sqrt() / 2.0, 0.0, 2.0_f64.sqrt() / 2.0));
+    assert_eq!(full_quarter * p, point!(1.0, 0.0, 0.0));
 }
 
 #[test]
@@ -186,6 +201,15 @@ fn test_inverse_matrix_multiplication() {
     let a_x_b = &matrix_a * &matrix_b;
 
     assert_eq!(matrix_a, a_x_b * matrix_b.inverse());
+}
+
+proptest! {
+    #[test]
+    fn test_inverse_matrix_property(vec in prop::collection::vec(prop::collection::vec(-1000.0..1000.0, 4), 4)) {
+        let m = Matrix { matrix: vec };
+        let inverse = m.inverse();
+        assert_eq!(m * inverse, Matrix::identity(4));
+    }
 }
 
 #[test]

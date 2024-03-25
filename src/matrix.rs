@@ -34,6 +34,22 @@ impl Matrix {
         transform * self
     }
 
+    pub fn rotation_x(&self, x: f64) -> Self {
+        let transform = matrix![ 1.0, 0.0, 0.0, 0.0;
+                                 0.0, x.cos(), -x.sin(), 0.0;
+                                 0.0, x.sin(), x.cos(), 0.0;
+                                 0.0, 0.0, 0.0, 1.0];
+        transform * self
+    }
+
+    pub fn rotation_y(&self, x: f64) -> Self {
+        let transform = matrix![ x.cos(), 0.0, x.sin(), 0.0;
+                                 0.0, 1.0, 0.0, 0.0;
+                                 -x.sin(), 0.0, x.cos(), 0.0;
+                                 0.0, 0.0, 0.0, 1.0];
+        transform * self
+    }
+
     pub fn rotation_z(&self, x: f64) -> Self {
         let transform = matrix![ x.cos(), -x.sin(), 0.0, 0.0;
                                  x.sin(), x.cos(), 0.0, 0.0;
