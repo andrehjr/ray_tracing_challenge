@@ -1,3 +1,4 @@
+pub mod camera;
 pub mod canvas;
 pub mod color;
 pub mod light;
@@ -7,4 +8,3 @@ pub mod ppm;
 pub mod ray;
 pub mod tuple;
 pub mod world;
-pub mod camera;
