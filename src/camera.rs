@@ -37,7 +37,7 @@ impl Camera {
     }
 
     pub fn pixel_size(&self) -> f64 {
-        return self.pixel_size;
+        self.pixel_size
     }
 
     pub fn ray_for_pixel(&self, x: usize, y: usize) -> Ray {
@@ -132,7 +132,7 @@ mod tests {
         assert_eq!(ray.origin, point!(0.0, 2.0, -5.0));
         assert_eq!(
             ray.direction,
-            vector!(2.0_f64.sqrt() / 2.0, 0.0, -2.0_f64.sqrt() / 2.0)
+            vector!(2.0_f64.sqrt() / 2.0, 0.0, -(2.0_f64.sqrt()) / 2.0)
         );
     }
 

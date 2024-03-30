@@ -62,7 +62,7 @@ mod tests {
         let red = Color::new(1.0, 0.0, 0.0);
 
         assert_eq!(*canvas.pixel_at(0, 0), black);
-        canvas.write_pixel(0, 0, red.clone());
+        canvas.write_pixel(0, 0, red);
         assert_eq!(*canvas.pixel_at(0, 0), red);
     }
 

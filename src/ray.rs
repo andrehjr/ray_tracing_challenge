@@ -105,7 +105,7 @@ impl Intersection<'_> {
         }
         Computation {
             t: self.t,
-            object: &self.object,
+            object: self.object,
             point,
             eyev,
             normalv,
@@ -393,7 +393,7 @@ mod tests {
         assert_eq!(comps.point, point!(0.0, 0.0, -1.0));
         assert_eq!(comps.eyev, vector!(0.0, 0.0, -1.0));
         assert_eq!(comps.normalv, vector!(0.0, 0.0, -1.0));
-        assert_eq!(comps.inside, false);
+        assert!(!comps.inside);
     }
 
     // test intersection precomputation calculations when intersection occurs on the inside of the sphere
@@ -415,7 +415,7 @@ mod tests {
         assert_eq!(comps.point, point!(0.0, 0.0, 1.0));
         assert_eq!(comps.eyev, vector!(0.0, 0.0, -1.0));
         assert_eq!(comps.normalv, vector!(0.0, 0.0, -1.0));
-        assert_eq!(comps.inside, true);
+        assert!(comps.inside);
     }
 
     // test shading an intersection
@@ -534,7 +534,7 @@ mod tests {
             .rotation_z(PI / 5.0)
             .scaling(1.0, 0.5, 1.0);
 
-        let n = sphere.normal_at(point!(0.0, 2.0_f64.sqrt() / 2.0, -2.0_f64.sqrt() / 2.0));
+        let n = sphere.normal_at(point!(0.0, 2.0_f64.sqrt() / 2.0, -(2.0_f64.sqrt()) / 2.0));
 
         assert_eq!(n, vector!(0.0, 0.97014, -0.24254));
     }

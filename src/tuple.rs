@@ -1,6 +1,6 @@
 use crate::matrix;
 use crate::matrix::*;
-use std::ops::{Add, Mul, Sub};
+use std::ops;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Tuple {
@@ -10,52 +10,34 @@ pub struct Tuple {
     pub w: f64,
 }
 
-impl Add<Tuple> for Tuple {
-    type Output = Self;
-
-    fn add(self, other: Self) -> Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
-            z: self.z + other.z,
-            w: self.w + other.w,
-        }
+impl_op_ex!(+|a: &Tuple, b: &Tuple| -> Tuple {
+    Tuple {
+        x: a.x + b.x,
+        y: a.y + b.y,
+        z: a.z + b.z,
+        w: a.w + b.w,
     }
-}
+});
 
-impl Sub<Tuple> for Tuple {
-    type Output = Self;
-
-    fn sub(self, other: Self) -> Self::Output {
-        Self {
-            x: self.x - other.x,
-            y: self.y - other.y,
-            z: self.z - other.z,
-            w: self.w - other.w,
-        }
+impl_op_ex!(-|a: &Tuple, b: &Tuple| -> Tuple {
+    Tuple {
+        x: a.x - b.x,
+        y: a.y - b.y,
+        z: a.z - b.z,
+        w: a.w - b.w,
     }
-}
+});
 
-impl Mul<f64> for Tuple {
-    type Output = Self;
-
-    fn mul(self, factor: f64) -> Self {
-        Self {
-            x: self.x * factor,
-            y: self.y * factor,
-            z: self.z * factor,
-            w: self.w,
-        }
+impl_op_ex!(*|a: &Tuple, b: &f64| -> Tuple {
+    Tuple {
+        x: a.x * b,
+        y: a.y * b,
+        z: a.z * b,
+        w: a.w,
     }
-}
+});
 
-impl Mul<Tuple> for Tuple {
-    type Output = f64;
-
-    fn mul(self, other: Self) -> f64 {
-        self.x * other.x + self.y * other.y + self.z * other.z + self.w * other.w
-    }
-}
+impl_op_ex!(*|a: &Tuple, b: &Tuple| -> f64 { a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w });
 
 impl Tuple {
     pub fn negate(&self) -> Self {
@@ -72,11 +54,11 @@ impl Tuple {
     }
 
     pub fn norm(&self) -> Self {
-        *self * (1.0 / self.magnitude())
+        self * (1.0 / self.magnitude())
     }
 
     pub fn reflect(&self, normal: Tuple) -> Tuple {
-        *self - normal * 2.0 * (*self * normal)
+        self - normal * 2.0 * (self * normal)
     }
 
     pub fn cross_product(&self, other: Tuple) -> Self {
@@ -93,7 +75,7 @@ impl Tuple {
                                  0.0, 1.0, 0.0, y;
                                  0.0, 0.0, 1.0, z;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * *self
+        transform * self
     }
 
     pub fn scaling(&self, x: f64, y: f64, z: f64) -> Self {
@@ -101,7 +83,7 @@ impl Tuple {
                                  0.0,   y, 0.0, 0.0;
                                  0.0, 0.0,   z, 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * *self
+        transform * self
     }
 
     pub fn rotation_x(&self, x: f64) -> Self {
@@ -109,7 +91,7 @@ impl Tuple {
                                  0.0, x.cos(), -x.sin(), 0.0;
                                  0.0, x.sin(),  x.cos(), 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * *self
+        transform * self
     }
 
     pub fn rotation_y(&self, x: f64) -> Self {
@@ -117,7 +99,7 @@ impl Tuple {
                                  0.0, 1.0, 0.0, 0.0;
                                  -x.sin(), 0.0, x.cos(), 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * *self
+        transform * self
     }
 
     pub fn rotation_z(&self, x: f64) -> Self {
@@ -125,7 +107,7 @@ impl Tuple {
                                  x.sin(), x.cos(), 0.0, 0.0;
                                  0.0, 0.0, 1.0, 0.0;
                                  0.0, 0.0, 0.0, 1.0];
-        transform * *self
+        transform * self
     }
 
     pub fn skew(&self, x_y: f64, x_z: f64, y_x: f64, y_z: f64, z_x: f64, z_y: f64) -> Self {
@@ -134,7 +116,7 @@ impl Tuple {
                                   z_x, z_y, 1.0, 0.0;
                                   0.0, 0.0, 0.0, 1.0];
 
-        transform * *self
+        transform * self
     }
 }
 

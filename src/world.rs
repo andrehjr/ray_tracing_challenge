@@ -13,6 +13,12 @@ pub struct World {
     pub lights: Vec<Light>,
 }
 
+impl Default for World {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl World {
     pub fn new() -> Self {
         Self {
@@ -73,20 +79,34 @@ impl World {
                 comps.point,
                 comps.eyev,
                 comps.normalv,
+                false,
             );
             current_color = current_color + color;
         }
-        return current_color;
+        current_color
     }
 
     pub fn color_at(&self, ray: &Ray) -> Color {
         let intersections = self.intersect(ray);
-        if intersections.len() == 0 {
+        if intersections.is_empty() {
             return Color::new(0.0, 0.0, 0.0);
         }
         let intersection = intersections.into_iter().find(|i| i.t >= 0.0).unwrap();
         let comps = intersection.prepare_computations(ray);
-        return self.shade_hit(&comps);
+        self.shade_hit(&comps)
+    }
+
+    pub fn is_shadowed(&self, point: &Tuple) -> bool {
+        let v = self.lights[0].position - point;
+        let distance = v.magnitude();
+        let direction = v.norm();
+
+        let ray = Ray::new(*point, direction);
+        let intersections = self.intersect(&ray);
+
+        let h = hit(&intersections);
+
+        h.is_some() && h.unwrap().t < distance
     }
 }
 
@@ -167,5 +187,41 @@ mod tests {
         let color = world.color_at(&ray);
 
         assert_eq!(color, world.objects[1].material.color);
+    }
+
+    // There is no shadow when nothing is collinear with point and light
+    #[test]
+    fn test_no_shadow() {
+        let world = World::default();
+        let point = point!(0.0, 10.0, 0.0);
+
+        assert!(!world.is_shadowed(&point));
+    }
+
+    // There is a shadow when an object is between the point and the light
+    #[test]
+    fn test_shadow() {
+        let world = World::default();
+        let point = point!(10.0, -10.0, 10.0);
+
+        assert!(world.is_shadowed(&point));
+    }
+
+    // There is no shadow when an object is behind the light
+    #[test]
+    fn test_no_shadow_behind_light() {
+        let world = World::default();
+        let point = point!(-20.0, 20.0, -20.0);
+
+        assert!(!world.is_shadowed(&point));
+    }
+
+    // There is no shadow when an object is behind the point
+    #[test]
+    fn test_no_shadow_behind_point() {
+        let world = World::default();
+        let point = point!(-2.0, 2.0, -2.0);
+
+        assert!(!world.is_shadowed(&point));
     }
 }

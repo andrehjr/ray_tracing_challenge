@@ -1,5 +1,4 @@
 use crate::tuple::Tuple;
-use std::ops::Mul;
 
 #[derive(Debug)]
 pub struct Matrix {
@@ -91,7 +90,7 @@ impl Matrix {
         } else {
             let first_line = &self.matrix[0];
             first_line
-                .into_iter()
+                .iter()
                 .enumerate()
                 .fold(0.0, |acc, (y, item)| acc + (item * self.cofactor(0, y)))
         }
@@ -106,7 +105,7 @@ impl Matrix {
                 let current_line = &self.matrix[x];
                 submatrix.push(
                     current_line
-                        .into_iter()
+                        .iter()
                         .enumerate()
                         .filter_map(
                             |(index, item)| if index != column { Some(*item) } else { None },
@@ -142,7 +141,7 @@ impl Matrix {
             let current_line = &self.matrix[x];
             inversed.push(
                 current_line
-                    .into_iter()
+                    .iter()
                     .enumerate()
                     .map(|(y, _item)| self.cofactor(x, y) / determinant)
                     .collect::<Vec<f64>>(),
@@ -178,7 +177,7 @@ pub fn view_transform(from: Tuple, to: Tuple, up: Tuple) -> Matrix {
                                -forward.x, -forward.y, -forward.z, 0.0;
                                0.0, 0.0, 0.0, 1.0];
 
-    return orientation * Matrix::identity(4).translation(-from.x, -from.y, -from.z);
+    orientation * Matrix::identity(4).translation(-from.x, -from.y, -from.z)
 }
 
 pub const EPSILON: f64 = 0.001;
@@ -207,112 +206,40 @@ impl PartialEq for Matrix {
     }
 }
 
-impl<'a> Mul<Tuple> for &'a Matrix {
-    type Output = Tuple;
+use std::ops;
 
-    fn mul(self, tuple: Tuple) -> Self::Output {
-        let matrix = matrix![tuple.x; tuple.y ; tuple.z; tuple.w ];
-        let result = self * &matrix;
+impl_op_ex!(*|a: &Matrix, b: &Tuple| -> Tuple {
+    let matrix = matrix![b.x; b.y ; b.z; b.w ];
+    let result = a * matrix;
 
-        let x = result.matrix[0][0];
-        let y = result.matrix[1][0];
-        let z = result.matrix[2][0];
-        let w = result.matrix[3][0];
+    let x = result.matrix[0][0];
+    let y = result.matrix[1][0];
+    let z = result.matrix[2][0];
+    let w = result.matrix[3][0];
 
-        Tuple { x, y, z, w }
-    }
-}
+    Tuple { x, y, z, w }
+});
 
-impl Mul<Tuple> for Matrix {
-    type Output = Tuple;
+impl_op_ex!(*|a: &Matrix, b: &Matrix| -> Matrix {
+    let lines = a.matrix.len();
+    let columns = b.matrix[0].len();
 
-    fn mul(self, tuple: Self::Output) -> Self::Output {
-        let matrix = matrix![tuple.x; tuple.y ; tuple.z; tuple.w ];
-        let result = self * &matrix;
+    let mut matrix = vec![vec![0.0; columns]; lines];
 
-        let x = result.matrix[0][0];
-        let y = result.matrix[1][0];
-        let z = result.matrix[2][0];
-        let w = result.matrix[3][0];
-
-        Self::Output { x, y, z, w }
-    }
-}
-
-impl<'a> Mul<&Matrix> for &Matrix {
-    type Output = Matrix;
-
-    fn mul(self, other: &Matrix) -> Matrix {
-        let lines = self.matrix.len();
-        let columns = other.matrix[0].len();
-
-        let mut matrix = vec![vec![0.0; columns]; lines];
-
-        for x in 0..lines {
-            for y in 0..columns {
-                let mut sum = 0.0;
-                for pos in 0..lines {
-                    let item = self.matrix[x][pos];
-                    let item_b = other.matrix[pos][y];
-                    sum += item * item_b;
-                }
-                matrix[x][y] = sum
+    for x in 0..lines {
+        for y in 0..columns {
+            let mut sum = 0.0;
+            for pos in 0..lines {
+                let item = a.matrix[x][pos];
+                let item_b = b.matrix[pos][y];
+                sum += item * item_b;
             }
+            matrix[x][y] = sum
         }
-
-        Matrix { matrix }
     }
-}
 
-impl Mul<&Matrix> for Matrix {
-    type Output = Self;
-
-    fn mul(self, other: &Matrix) -> Self {
-        let lines = self.matrix.len();
-        let columns = other.matrix[0].len();
-
-        let mut matrix = vec![vec![0.0; columns]; lines];
-
-        for x in 0..lines {
-            for y in 0..columns {
-                let mut sum = 0.0;
-                for pos in 0..lines {
-                    let item = self.matrix[x][pos];
-                    let item_b = other.matrix[pos][y];
-                    sum += item * item_b;
-                }
-                matrix[x][y] = sum
-            }
-        }
-
-        Self { matrix }
-    }
-}
-
-impl Mul for Matrix {
-    type Output = Self;
-
-    fn mul(self, other: Self) -> Self {
-        let lines = self.matrix.len();
-        let columns = other.matrix[0].len();
-
-        let mut matrix = vec![vec![0.0; columns]; lines];
-
-        for x in 0..lines {
-            for y in 0..columns {
-                let mut sum = 0.0;
-                for pos in 0..lines {
-                    let item = self.matrix[x][pos];
-                    let item_b = other.matrix[pos][y];
-                    sum += item * item_b;
-                }
-                matrix[x][y] = sum
-            }
-        }
-
-        Self { matrix }
-    }
-}
+    Matrix { matrix }
+});
 
 #[cfg(test)]
 mod tests {

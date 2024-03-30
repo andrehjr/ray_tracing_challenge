@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate impl_ops;
+
 pub mod camera;
 pub mod canvas;
 pub mod color;
