@@ -8,9 +8,11 @@ use raytracer::*;
 fn main() {
     let mut floor = ray::Sphere::init();
     floor.transform = matrix::Matrix::identity(4).scaling(10.0, 0.01, 10.0);
-    let mut floor_material = material::Material::default();
-    floor_material.color = color::Color::new(1.0, 0.9, 0.9);
-    floor_material.specular = 0.0;
+    let floor_material = material::Material {
+        color: color::Color::new(1.0, 0.9, 0.9),
+        specular: 0.0,
+        ..material::Material::default()
+    };
     floor.material = floor_material;
 
     let mut left_wall = ray::Sphere::init();
@@ -31,30 +33,36 @@ fn main() {
 
     let mut middle = ray::Sphere::init();
     middle.transform = matrix::Matrix::identity(4).translation(-0.5, 1.0, 0.5);
-    let mut middle_material = material::Material::default();
-    middle_material.color = color::Color::new(0.1, 1.0, 0.5);
-    middle_material.diffuse = 0.7;
-    middle_material.specular = 0.3;
+    let middle_material = material::Material {
+        color: color::Color::new(0.1, 1.0, 0.5),
+        diffuse: 0.7,
+        specular: 0.3,
+        ..material::Material::default()
+    };
     middle.material = middle_material;
 
     let mut right = ray::Sphere::init();
     right.transform = matrix::Matrix::identity(4)
         .scaling(0.5, 0.5, 0.5)
         .translation(1.5, 0.5, -0.5);
-    let mut right_material = material::Material::default();
-    right_material.color = color::Color::new(0.5, 1.0, 0.1);
-    right_material.diffuse = 0.7;
-    right_material.specular = 0.3;
+    let right_material = material::Material {
+        color: color::Color::new(0.5, 1.0, 0.1),
+        diffuse: 0.7,
+        specular: 0.3,
+        ..material::Material::default()
+    };
     right.material = right_material;
 
     let mut left = ray::Sphere::init();
     left.transform = matrix::Matrix::identity(4)
         .scaling(0.33, 0.33, 0.33)
         .translation(-1.5, 0.33, -0.75);
-    let mut left_material = material::Material::default();
-    left_material.color = color::Color::new(1.0, 0.8, 0.1);
-    left_material.diffuse = 0.7;
-    left_material.specular = 0.3;
+    let left_material = material::Material {
+        color: color::Color::new(1.0, 0.8, 0.1),
+        diffuse: 0.7,
+        specular: 0.3,
+        ..material::Material::default()
+    };
     left.material = left_material;
 
     let mut world = world::World::new();

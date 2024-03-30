@@ -561,7 +561,14 @@ mod tests {
     fn test_rotation_x() {
         let point_a = point!(0.0, 1.0, 0.0);
 
-        assert_eq!(point_a.rotation_x(PI / 4.0), point!(0.0, 0.70710, 0.70710));
+        assert_eq!(
+            point_a.rotation_x(PI / 4.0),
+            point!(
+                0.0,
+                std::f64::consts::FRAC_1_SQRT_2,
+                std::f64::consts::FRAC_1_SQRT_2
+            )
+        );
         assert_eq!(point_a.rotation_x(PI / 2.0), point!(0.0, 0.0, 1.0));
     }
 
@@ -571,7 +578,14 @@ mod tests {
     fn test_rotation_y() {
         let point_a = point!(0.0, 0.0, 1.0);
 
-        assert_eq!(point_a.rotation_y(PI / 4.0), point!(0.70710, 0.0, 0.70710));
+        assert_eq!(
+            point_a.rotation_y(PI / 4.0),
+            point!(
+                std::f64::consts::FRAC_1_SQRT_2,
+                0.0,
+                std::f64::consts::FRAC_1_SQRT_2
+            )
+        );
         assert_eq!(point_a.rotation_y(PI / 2.0), point!(1.0, 0.0, 0.0));
     }
 
@@ -581,7 +595,14 @@ mod tests {
     fn test_rotation_z() {
         let point_a = point!(0.0, 1.0, 0.0);
 
-        assert_eq!(point_a.rotation_z(PI / 4.0), point!(-0.70710, 0.70710, 0.0));
+        assert_eq!(
+            point_a.rotation_z(PI / 4.0),
+            point!(
+                -std::f64::consts::FRAC_1_SQRT_2,
+                std::f64::consts::FRAC_1_SQRT_2,
+                0.0
+            )
+        );
         assert_eq!(point_a.rotation_z(PI / 2.0), point!(-1.0, 0.0, 0.0));
     }
 

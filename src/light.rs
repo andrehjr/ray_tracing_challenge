@@ -16,7 +16,7 @@ pub fn lightning(
     normalv: Tuple,
     in_shadow: bool,
 ) -> Color {
-    let effective_color = &(&material.color * &light.intensity);
+    let effective_color = &(material.color * light.intensity);
 
     let lightv = (light.position - position).norm();
 
@@ -45,7 +45,7 @@ pub fn lightning(
     }
 
     let factor = reflect_dot_eye.powf(material.shininess);
-    specular = &light.intensity * material.specular * factor;
+    specular = light.intensity * material.specular * factor;
     ambient + diffuse + specular
 }
 

@@ -15,19 +15,6 @@ pub struct World {
 
 impl Default for World {
     fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl World {
-    pub fn new() -> Self {
-        Self {
-            objects: vec![],
-            lights: vec![],
-        }
-    }
-
-    pub fn default() -> Self {
         let mut world = Self::new();
 
         let light = Light {
@@ -55,6 +42,15 @@ impl World {
         world.objects.push(s2);
 
         world
+    }
+}
+
+impl World {
+    pub fn new() -> Self {
+        Self {
+            objects: vec![],
+            lights: vec![],
+        }
     }
 
     pub fn intersect<'a>(&'a self, ray: &'a Ray) -> Vec<Intersection> {

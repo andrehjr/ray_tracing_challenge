@@ -114,7 +114,7 @@ impl Intersection<'_> {
     }
 }
 
-pub fn hit<'a>(intersections: &'a Vec<Intersection>) -> Option<&'a Intersection<'a>> {
+pub fn hit<'a>(intersections: &'a [Intersection]) -> Option<&'a Intersection<'a>> {
     // take the first positive intersection
     // and return the minimum of those
     intersections
@@ -449,11 +449,13 @@ mod tests {
     // test shading an intersection from the inside
     #[test]
     fn test_shade_intersection_inside() {
-        let mut world = World::default();
-        world.lights = vec![Light {
-            intensity: color::WHITE,
-            position: point!(0.0, 0.25, 0.0),
-        }];
+        let world = World {
+            lights: vec![Light {
+                intensity: color::WHITE,
+                position: point!(0.0, 0.25, 0.0),
+            }],
+            ..Default::default()
+        };
 
         let ray = Ray {
             origin: point!(0.0, 0.0, 0.0),
@@ -520,9 +522,16 @@ mod tests {
         let mut sphere = Sphere::init();
         sphere.transform = Matrix::identity(4).translation(0.0, 1.0, 0.0);
 
-        let n = sphere.normal_at(point!(0.0, 1.70711, -0.70711));
+        let n = sphere.normal_at(point!(0.0, 1.70711, -std::f64::consts::FRAC_1_SQRT_2));
 
-        assert_eq!(n, vector!(0.0, 0.70711, -0.70711));
+        assert_eq!(
+            n,
+            vector!(
+                0.0,
+                std::f64::consts::FRAC_1_SQRT_2,
+                -std::f64::consts::FRAC_1_SQRT_2
+            )
+        );
     }
 
     #[test]
