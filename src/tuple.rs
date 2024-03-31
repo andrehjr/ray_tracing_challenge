@@ -1,5 +1,5 @@
-use crate::matrix;
 use crate::matrix::*;
+use crate::{matrix, EPSILON};
 use std::ops;
 
 #[derive(Debug, Clone, Copy)]
@@ -119,8 +119,6 @@ impl Tuple {
         transform * self
     }
 }
-
-pub const EPSILON: f64 = 0.001;
 
 impl PartialEq for Tuple {
     fn eq(&self, other: &Self) -> bool {

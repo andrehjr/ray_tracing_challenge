@@ -13,7 +13,6 @@ impl Color {
     }
 }
 
-pub const EPSILON: f64 = 0.001;
 pub const WHITE: Color = Color {
     red: 1.0,
     green: 1.0,
@@ -22,9 +21,9 @@ pub const WHITE: Color = Color {
 
 impl PartialEq for Color {
     fn eq(&self, other: &Self) -> bool {
-        let red_diff = (self.red - other.red).abs() <= EPSILON;
-        let green_diff = (self.green - other.green).abs() <= EPSILON;
-        let blue_diff = (self.blue - other.blue).abs() <= EPSILON;
+        let red_diff = (self.red - other.red).abs() <= crate::EPSILON;
+        let green_diff = (self.green - other.green).abs() <= crate::EPSILON;
+        let blue_diff = (self.blue - other.blue).abs() <= crate::EPSILON;
 
         red_diff && green_diff && blue_diff
     }

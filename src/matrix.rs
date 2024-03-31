@@ -180,8 +180,6 @@ pub fn view_transform(from: Tuple, to: Tuple, up: Tuple) -> Matrix {
     orientation * Matrix::identity(4).translation(-from.x, -from.y, -from.z)
 }
 
-pub const EPSILON: f64 = 0.001;
-
 impl PartialEq for Matrix {
     fn eq(&self, other: &Self) -> bool {
         if self.matrix.is_empty() && other.matrix.is_empty() {
@@ -196,7 +194,7 @@ impl PartialEq for Matrix {
 
             for x in 0..lines {
                 for y in 0..columns {
-                    if (self.at(x, y) - other.at(x, y)).abs() > EPSILON {
+                    if (self.at(x, y) - other.at(x, y)).abs() > crate::EPSILON {
                         return false;
                     }
                 }

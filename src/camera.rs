@@ -74,7 +74,6 @@ mod tests {
     use super::*;
 
     use crate::color::Color;
-    use crate::matrix;
     use crate::vector;
     use approx::relative_eq;
     use core::f64::consts::PI;
@@ -97,10 +96,10 @@ mod tests {
     #[test]
     fn test_camera_pixel_size_calculation() {
         let camera = Camera::new(200, 125, FRAC_PI_2);
-        relative_eq!(camera.pixel_size(), 0.01, epsilon = matrix::EPSILON);
+        relative_eq!(camera.pixel_size(), 0.01, epsilon = crate::EPSILON);
 
         let camera = Camera::new(125, 200, FRAC_PI_2);
-        relative_eq!(camera.pixel_size(), 0.01, epsilon = matrix::EPSILON);
+        relative_eq!(camera.pixel_size(), 0.01, epsilon = crate::EPSILON);
     }
 
     #[test]

@@ -107,6 +107,7 @@ impl Intersection<'_> {
             t: self.t,
             object: self.object,
             point,
+            over_point: point + normalv * crate::EPSILON,
             eyev,
             normalv,
             inside,
@@ -127,6 +128,7 @@ pub struct Computation<'a> {
     pub t: f64,
     pub object: &'a Sphere,
     pub point: Tuple,
+    pub over_point: Tuple,
     pub eyev: Tuple,
     pub normalv: Tuple,
     pub inside: bool,
@@ -285,6 +287,26 @@ mod tests {
 
         assert_eq!(intersect.t, 3.5);
         assert_eq!(intersect.object, &sphere);
+    }
+
+    #[test]
+    fn test_hit_offset_point() {
+        let charles = Ray {
+            origin: point!(0.0, 0.0, -5.0),
+            direction: vector!(0.0, 0.0, 1.0),
+        };
+
+        let mut sphere = Sphere::init();
+        sphere.transform = Matrix::identity(4).translation(0.0, 0.0, 1.0);
+
+        let i = Intersection {
+            t: 5.0,
+            object: &sphere,
+        };
+        let comps = i.prepare_computations(&charles);
+
+        assert!(comps.over_point.z < -crate::EPSILON / 2.0);
+        assert!(comps.point.z > comps.over_point.z);
     }
 
     #[test]

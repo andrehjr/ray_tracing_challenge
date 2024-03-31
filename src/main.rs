@@ -81,7 +81,7 @@ fn main() {
     world.objects.push(right);
     world.objects.push(left);
 
-    let mut camera = camera::Camera::new(500, 250, FRAC_PI_3);
+    let mut camera = camera::Camera::new(400, 400, FRAC_PI_3);
     camera.transform =
         matrix::view_transform(point!(0, 1.5, -5), point!(0, 1, 0), vector!(0, 1, 0));
 

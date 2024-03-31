@@ -75,7 +75,7 @@ impl World {
                 comps.point,
                 comps.eyev,
                 comps.normalv,
-                false,
+                self.is_shadowed(&comps.over_point),
             );
             current_color = current_color + color;
         }
